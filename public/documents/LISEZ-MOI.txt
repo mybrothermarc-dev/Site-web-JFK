@@ -1,0 +1,7 @@
+Dépose ici le PDF du rapport annuel, nommé exactement :
+
+rapport-annuel-2025.pdf
+
+Le lien de téléchargement du site pointe déjà vers ce fichier
+(voir src/data/site.ts > annualReportUrl). Une fois le PDF ajouté,
+supprime ce fichier LISEZ-MOI.txt.

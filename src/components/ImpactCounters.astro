@@ -1,0 +1,64 @@
+---
+import { impactStats2025 } from '../data/site';
+import type { Lang } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  /** Nombre de statistiques à afficher (par défaut toutes) */
+  limit?: number;
+}
+const { lang, limit } = Astro.props;
+const stats = limit ? impactStats2025.slice(0, limit) : impactStats2025;
+---
+
+<div class="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+  {stats.map((stat) => (
+    <div class="card flex flex-col items-center justify-center gap-1 px-4 py-6 text-center">
+      <p class="counter font-display text-3xl font-extrabold text-sky-600 sm:text-4xl" data-target={stat.value} data-suffix={stat.suffix}>
+        0
+      </p>
+      <p class="text-sm font-medium text-night/70">{lang === 'fr' ? stat.labelFr : stat.labelEn}</p>
+    </div>
+  ))}
+</div>
+
+<script>
+  const counters = document.querySelectorAll<HTMLElement>('.counter');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animateCounter(el: HTMLElement) {
+    const target = Number(el.dataset.target ?? '0');
+    const suffix = el.dataset.suffix ?? '';
+
+    if (prefersReducedMotion) {
+      el.textContent = target.toLocaleString('fr-FR') + suffix;
+      return;
+    }
+
+    const duration = 1500;
+    const start = performance.now();
+
+    function frame(now: number) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(target * eased);
+      el.textContent = value.toLocaleString('fr-FR') + suffix;
+      if (progress < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+
+  counters.forEach((counter) => observer.observe(counter));
+</script>

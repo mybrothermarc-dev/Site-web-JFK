@@ -1,0 +1,11 @@
+{
+  "firstName": "Niry",
+  "age": 6,
+  "photoPlaceholder": "leaf",
+  "status": "available",
+  "order": 3,
+  "bio": {
+    "fr": "Niry est le petit dernier du centre. Plein d’énergie, il découvre chaque jour avec émerveillement la vie à Paradisakely.",
+    "en": "Niry is the youngest at the center. Full of energy, he discovers daily life at Paradisakely with wonder every day."
+  }
+}

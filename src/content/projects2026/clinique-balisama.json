@@ -1,0 +1,15 @@
+{
+  "title": {
+    "fr": "Balisama Family Clinic",
+    "en": "Balisama Family Clinic"
+  },
+  "description": {
+    "fr": "Ouverture d’un hôpital en brousse pour faciliter les évacuations sanitaires et répondre aux besoins chirurgicaux des populations isolées, en lien avec nos missions médicales bimestrielles.",
+    "en": "Opening a bush hospital to facilitate medical evacuations and meet the surgical needs of isolated populations, in connection with our bimonthly medical missions."
+  },
+  "budgetGoal": 80000,
+  "budgetRaised": 18000,
+  "currency": "USD",
+  "photoPlaceholder": "sky",
+  "order": 1
+}

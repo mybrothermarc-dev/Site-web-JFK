@@ -1,0 +1,37 @@
+---
+interface Props {
+  goal: number;
+  raised: number;
+  currency: string;
+  goalLabel: string;
+  raisedLabel: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+}
+const { goal, raised, currency, goalLabel, raisedLabel, tone = 'sky' } = Astro.props;
+const percent = Math.min(100, Math.round((raised / goal) * 100));
+
+const barTone: Record<string, string> = {
+  sun: 'bg-sun-500',
+  sky: 'bg-sky-500',
+  leaf: 'bg-leaf-500',
+};
+
+function formatAmount(n: number, curr: string) {
+  return new Intl.NumberFormat('fr-FR').format(n) + ' ' + curr;
+}
+---
+
+<div>
+  <div class="mb-2 flex items-end justify-between text-sm">
+    <span class="font-semibold text-night">
+      {raisedLabel} : <span class="text-night">{formatAmount(raised, currency)}</span>
+    </span>
+    <span class="text-night/60">
+      {goalLabel} : {formatAmount(goal, currency)}
+    </span>
+  </div>
+  <div class="h-3 w-full overflow-hidden rounded-full bg-night/10" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+    <div class:list={['h-full rounded-full', barTone[tone]]} style={`width: ${percent}%`}></div>
+  </div>
+  <p class="mt-1 text-right text-xs font-bold text-night/50">{percent}%</p>
+</div>

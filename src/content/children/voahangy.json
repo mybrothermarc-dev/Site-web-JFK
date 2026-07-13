@@ -1,0 +1,11 @@
+{
+  "firstName": "Voahangy",
+  "age": 7,
+  "photoPlaceholder": "sky",
+  "status": "available",
+  "order": 5,
+  "bio": {
+    "fr": "Voahangy est douce et attentive aux autres. Elle aime particulièrement les activités manuelles et le jardinage.",
+    "en": "Voahangy is gentle and caring towards others. She especially loves crafts and gardening activities."
+  }
+}

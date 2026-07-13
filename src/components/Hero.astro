@@ -1,0 +1,60 @@
+---
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Cta {
+  label: string;
+  href: string;
+  style?: 'primary' | 'secondary' | 'outline';
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  primaryCta?: Cta;
+  secondaryCta?: Cta;
+  imageLabel: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+  /** Hauteur : "full" pour le hero d'accueil, "tall" pour les autres pages */
+  size?: 'full' | 'tall';
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+  imageLabel,
+  tone = 'sky',
+  size = 'tall',
+} = Astro.props;
+
+const heightClass = size === 'full' ? 'min-h-[85vh]' : 'min-h-[55vh]';
+---
+
+<section class:list={['relative flex items-end overflow-hidden', heightClass]}>
+  <PlaceholderImage tone={tone} label={imageLabel} kind="general" class="absolute inset-0 h-full w-full" />
+  <div class="absolute inset-0 bg-gradient-to-t from-night/85 via-night/40 to-night/10" aria-hidden="true"></div>
+
+  <div class="container-jfk relative z-10 pb-16 pt-32 text-white sm:pb-20">
+    {eyebrow && <p class="mb-3 font-display text-sm font-bold uppercase tracking-widest text-sun-300">{eyebrow}</p>}
+    <h1 class="max-w-3xl font-display text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">{title}</h1>
+    {subtitle && <p class="mt-5 max-w-2xl text-lg text-white/90 sm:text-xl">{subtitle}</p>}
+
+    {(primaryCta || secondaryCta) && (
+      <div class="mt-8 flex flex-wrap gap-4">
+        {primaryCta && (
+          <a href={primaryCta.href} class={primaryCta.style === 'secondary' ? 'btn-secondary' : 'btn-primary'}>
+            {primaryCta.label}
+          </a>
+        )}
+        {secondaryCta && (
+          <a href={secondaryCta.href} class="btn-outline">
+            {secondaryCta.label}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</section>

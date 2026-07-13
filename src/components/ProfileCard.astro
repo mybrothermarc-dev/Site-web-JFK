@@ -1,0 +1,53 @@
+---
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Props {
+  name: string;
+  subtitle: string;
+  description: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+  kind?: 'child' | 'missionary' | 'teacher';
+  statusLabel?: string;
+  statusVariant?: 'available' | 'sponsored';
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  name,
+  subtitle,
+  description,
+  tone = 'sky',
+  kind = 'child',
+  statusLabel,
+  statusVariant,
+  ctaLabel,
+  ctaHref,
+} = Astro.props;
+---
+
+<article class="card flex h-full flex-col overflow-hidden">
+  <div class="relative">
+    <PlaceholderImage tone={tone} label={name} kind={kind} class="aspect-[4/3] w-full" />
+    {statusLabel && (
+      <span
+        class:list={[
+          'absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold shadow',
+          statusVariant === 'sponsored' ? 'bg-leaf-500 text-white' : 'bg-sun-500 text-night',
+        ]}
+      >
+        {statusLabel}
+      </span>
+    )}
+  </div>
+  <div class="flex flex-1 flex-col gap-2 p-5">
+    <h3 class="font-display text-lg font-bold text-night">{name}</h3>
+    <p class="text-sm font-semibold text-sky-700">{subtitle}</p>
+    <p class="flex-1 text-sm leading-relaxed text-night/70">{description}</p>
+    {ctaLabel && ctaHref && (
+      <a href={ctaHref} class="btn-secondary mt-3 w-full !py-2.5 text-sm">
+        {ctaLabel}
+      </a>
+    )}
+  </div>
+</article>

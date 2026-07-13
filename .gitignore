@@ -1,0 +1,26 @@
+# Dépendances
+node_modules/
+
+# Build Astro
+dist/
+.astro/
+
+# Cloudflare
+.wrangler/
+
+# Variables d'environnement (clés API, secrets)
+.env
+.env.production
+.env.local
+
+# Configuration locale de l'assistant IA (chemins spécifiques à la machine)
+.claude/
+
+# Éditeurs / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+npm-debug.log*

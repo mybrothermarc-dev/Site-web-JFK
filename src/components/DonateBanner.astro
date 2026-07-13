@@ -1,0 +1,53 @@
+---
+import { routeUrl, type Lang } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  id="donate-banner"
+  class="fixed inset-x-0 bottom-0 z-40 hidden border-t border-black/5 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur"
+  role="complementary"
+  aria-label={lang === 'fr' ? 'Bandeau de don' : 'Donation banner'}
+>
+  <div class="container-jfk flex items-center justify-between gap-4">
+    <p class="text-sm font-semibold text-night sm:text-base">{t.donateBanner.text}</p>
+    <div class="flex items-center gap-2 shrink-0">
+      <a href={routeUrl('donate', lang)} class="btn-primary !px-4 !py-2 text-sm">{t.donateBanner.cta}</a>
+      <button
+        id="donate-banner-close"
+        type="button"
+        aria-label={lang === 'fr' ? 'Fermer le bandeau' : 'Close banner'}
+        class="rounded-full p-2 text-night/50 hover:bg-night/5 hover:text-night"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'jfk-donate-banner-dismissed';
+  const banner = document.getElementById('donate-banner');
+  const closeBtn = document.getElementById('donate-banner-close');
+
+  if (banner) {
+    const dismissed = sessionStorage.getItem(KEY);
+    if (!dismissed) {
+      // Petit délai pour laisser le temps de lire la page avant d'afficher le bandeau
+      window.setTimeout(() => banner.classList.remove('hidden'), 1500);
+    }
+  }
+
+  closeBtn?.addEventListener('click', () => {
+    banner?.classList.add('hidden');
+    sessionStorage.setItem(KEY, '1');
+  });
+</script>

@@ -1,0 +1,101 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import DonateBanner from '../components/DonateBanner.astro';
+import { routes, type RouteKey, type Lang, otherLang } from '../i18n/routes';
+import { siteConfig } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  currentRoute: RouteKey;
+  title: string;
+  description: string;
+  /** Désactive le bandeau de don persistant (ex: sur la page Don elle-même) */
+  hideDonateBanner?: boolean;
+  ogImage?: string;
+}
+
+const { lang, currentRoute, title, description, hideDonateBanner = false, ogImage = '/images/og-default.jpg' } = Astro.props;
+
+const canonicalPath = routes[currentRoute][lang];
+const canonicalUrl = new URL(canonicalPath, siteConfig.url).toString();
+const alternateFr = new URL(routes[currentRoute].fr, siteConfig.url).toString();
+const alternateEn = new URL(routes[currentRoute].en, siteConfig.url).toString();
+const fullTitle = `${title} | ${siteConfig.name}`;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'NGO',
+  name: siteConfig.name,
+  url: siteConfig.url,
+  logo: new URL('/favicon.svg', siteConfig.url).toString(),
+  description:
+    lang === 'fr'
+      ? 'Œuvre chrétienne missionnaire à Madagascar : évangélisation, mission médicale, écoles et orphelinat pour les villages les plus isolés.'
+      : 'Christian mission organization in Madagascar: evangelism, medical mission, schools and orphan care for the most isolated villages.',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: siteConfig.address,
+    addressCountry: 'MG',
+  },
+  telephone: siteConfig.contacts.mobile,
+  email: siteConfig.contacts.email,
+  sameAs: [siteConfig.socials.facebook, siteConfig.socials.instagram],
+  founder: {
+    '@type': 'Person',
+    name: siteConfig.founder,
+  },
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="fr" href={alternateFr} />
+    <link rel="alternate" hreflang="en" href={alternateEn} />
+    <link rel="alternate" hreflang="x-default" href={alternateFr} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL(ogImage, siteConfig.url).toString()} />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">
+      {lang === 'fr' ? 'Passer au contenu' : 'Skip to content'}
+    </a>
+    <Header lang={lang} currentRoute={currentRoute} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    {!hideDonateBanner && <DonateBanner lang={lang} />}
+  </body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.jesus-family-kingdom.com/sitemap-index.xml

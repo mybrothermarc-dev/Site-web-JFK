@@ -1,0 +1,14 @@
+{
+  "firstName": "Solofo",
+  "zone": "Vavatenina",
+  "photoPlaceholder": "sky",
+  "order": 1,
+  "summary": {
+    "fr": "Envoyé à Vavatenina, Solofo sillonne les pistes de brousse pour annoncer l’Évangile et implanter des groupes de disciples dans des villages jusque-là non atteints.",
+    "en": "Sent to Vavatenina, Solofo travels remote bush trails to share the Gospel and plant disciple groups in previously unreached villages."
+  },
+  "stats": {
+    "fr": "5 nouveaux villages atteints",
+    "en": "5 new villages reached"
+  }
+}

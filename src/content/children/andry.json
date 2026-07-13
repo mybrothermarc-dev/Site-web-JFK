@@ -1,0 +1,11 @@
+{
+  "firstName": "Andry",
+  "age": 11,
+  "photoPlaceholder": "leaf",
+  "status": "sponsored",
+  "order": 6,
+  "bio": {
+    "fr": "Andry est le grand frère du groupe. Sérieux et appliqué, il vient d’entrer en classe de 9e et souhaite devenir médecin.",
+    "en": "Andry is the group’s big brother figure. Serious and diligent, he just started 9th grade and wants to become a doctor."
+  }
+}

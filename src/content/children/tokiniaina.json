@@ -1,0 +1,11 @@
+{
+  "firstName": "Tokiniaina",
+  "age": 10,
+  "photoPlaceholder": "sky",
+  "status": "sponsored",
+  "order": 2,
+  "bio": {
+    "fr": "Tokiniaina est un enfant joyeux et curieux. Il excelle en calcul et aime aider les plus petits à l’école de Paradisakely.",
+    "en": "Tokiniaina is a joyful and curious child. He excels in math and loves helping younger children at the Paradisakely school."
+  }
+}

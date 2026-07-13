@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import IconFeature from '../../components/IconFeature.astro';
+import ProfileCard from '../../components/ProfileCard.astro';
+import WebForm from '../../components/WebForm.astro';
+import FormField from '../../components/FormField.astro';
+import { missionariesContent } from '../../data/pages/missionaries';
+import { missionarySupport } from '../../data/site';
+import { useTranslations } from '../../i18n/ui';
+import { routeUrl } from '../../i18n/routes';
+import { getCollection } from 'astro:content';
+
+const lang = 'en' as const;
+const c = missionariesContent[lang];
+const t = useTranslations(lang);
+
+const missionaries = (await getCollection('missionaries')).sort((a, b) => a.data.order - b.data.order);
+const donateLink = `${routeUrl('donate', lang)}?fleche=missionaries`;
+---
+
+<BaseLayout lang={lang} currentRoute="supportMissionaries" title={c.seoTitle} description={c.seoDescription}>
+  <Hero
+    eyebrow={c.heroEyebrow}
+    title={c.heroTitle}
+    subtitle={c.heroSubtitle}
+    imageLabel="JFK missionaries in the bush"
+    tone="leaf"
+    primaryCta={{ label: c.heroCta, href: '#missionaries' }}
+  />
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-3xl">
+      <h2 class="text-3xl sm:text-4xl">{c.contextTitle}</h2>
+      <div class="mt-6 space-y-4 text-lg leading-relaxed text-night/75">
+        {c.contextParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section id="missionaries" class="section bg-leaf-50 scroll-mt-24">
+    <div class="container-jfk">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.galleryTitle}</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {missionaries.map((m) => (
+          <ProfileCard
+            name={m.data.firstName}
+            subtitle={m.data.zone}
+            description={`${m.data.summary.en} ${m.data.stats.en}.`}
+            tone={m.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            kind="missionary"
+            ctaLabel={t.common.supportMissionary}
+            ctaHref={donateLink}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-jfk">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl sm:text-4xl">{c.coversTitle}</h2>
+        <p class="mt-3 font-display text-2xl font-extrabold text-sky-600">
+          €{missionarySupport.monthlyAmount} {t.common.perMonth}
+        </p>
+      </div>
+      <div class="mx-auto mt-10 grid max-w-3xl gap-x-10 gap-y-8 sm:grid-cols-3">
+        {c.covers.map((item, i) => (
+          <IconFeature icon={item.icon} title={item.title} text={item.text} tone={(['sky', 'leaf', 'sun'] as const)[i % 3]} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sun-50">
+    <div class="container-jfk max-w-3xl text-center">
+      <h2 class="text-3xl sm:text-4xl">{c.urgentTitle}</h2>
+      <p class="mt-4 leading-relaxed text-night/75">{c.urgentText}</p>
+      <p class="mt-4 font-display text-xl font-bold text-night">
+        About ${missionarySupport.emergencyCaseCost} per identified medical emergency
+      </p>
+      <a href={donateLink} class="btn-primary mt-6 inline-flex">{c.ctaOneTime}</a>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-2xl">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.prayFormTitle}</h2>
+      <p class="mt-3 text-center text-night/70">{c.prayFormSubtitle}</p>
+      <div class="card mt-8 p-6 sm:p-8">
+        <WebForm lang={lang} subject={c.prayFormSubject} formId="form-pray-missionaries">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <FormField label={t.form.name} name="name" type="text" />
+            <FormField label={t.form.email} name="email" type="email" />
+          </div>
+          <div class="mt-5">
+            <FormField label={t.form.message} name="message" type="textarea" required={false} placeholder="A word of encouragement for our missionaries?" />
+          </div>
+        </WebForm>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-night text-white">
+    <div class="container-jfk text-center">
+      <h2 class="text-3xl text-white sm:text-4xl">{c.ctaFinalTitle}</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-white/80">{c.ctaFinalText}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href={donateLink} class="btn-primary">{c.ctaMonthly}</a>
+        <a href="#missionaries" class="btn-outline">{c.heroCta}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  icon: 'home' | 'meal' | 'school' | 'supplies' | 'medical' | 'heart' | 'travel' | 'book' | 'salary' | 'training' | 'building';
+  title: string;
+  text: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+}
+const { icon, title, text, tone = 'sky' } = Astro.props;
+
+const icons: Record<string, string> = {
+  home: 'M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z',
+  meal: 'M8 2v8a2 2 0 002 2v10h2V12a2 2 0 002-2V2h-2v6h-1V2H9v6H8V2zm9 0c-1.7 0-3 2.7-3 6s1.3 6 3 6v8h2V2h-2z',
+  school: 'M12 3L1 8l11 5 9-4.1V17h2V8L12 3zM5 10.8V14c0 2.2 3.1 4 7 4s7-1.8 7-4v-3.2l-7 3.2-7-3.2z',
+  supplies: 'M4 4h16v3H4V4zm0 5h16v11H4V9zm4 2v7h2v-7H8zm6 0v7h2v-7h-2z',
+  medical: 'M12 2a4 4 0 014 4v2h2a4 4 0 014 4 4 4 0 01-4 4h-2v2a4 4 0 01-4 4 4 4 0 01-4-4v-2H6a4 4 0 01-4-4 4 4 0 014-4h2V6a4 4 0 014-4z',
+  heart: 'M12 21s-7.5-4.6-10-9.3C.5 8.4 2.3 5 5.7 5c2 0 3.4 1 4.3 2.4C11 6 12.4 5 14.3 5 17.7 5 19.5 8.4 22 11.7 19.5 16.4 12 21 12 21z',
+  travel: 'M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4.5-1 4.5 1v-1.5L13 19v-5.5l8 2.5z',
+  book: 'M4 4h9a3 3 0 013 3v13a2.5 2.5 0 00-2.5-2.5H4V4zm16 0h-2v14.5A2.5 2.5 0 0120.5 21H20V4z',
+  salary: 'M12 2a10 10 0 100 20 10 10 0 000-20zm.9 15.5v1.3h-1.6v-1.3c-1.7-.3-2.7-1.4-2.8-2.9h1.7c.1.8.6 1.4 1.7 1.4.9 0 1.6-.4 1.6-1.2 0-.7-.5-1-1.8-1.4-1.7-.5-2.9-1.1-2.9-2.7 0-1.3 1-2.2 2.5-2.5V5.5h1.6v1.3c1.5.3 2.4 1.3 2.5 2.6h-1.7c-.1-.7-.6-1.2-1.5-1.2-.9 0-1.4.4-1.4 1.1 0 .6.5.9 1.8 1.3 1.9.5 2.9 1.2 2.9 2.8 0 1.4-1.1 2.3-2.6 2.6z',
+  training: 'M12 2l9 4.5-9 4.5-9-4.5L12 2zm-7 7.2l7 3.5 7-3.5V15l-7 3.5L5 15V9.2zM3 11l2 1v4.2l-2-1V11z',
+  building: 'M4 21V9l8-6 8 6v12h-6v-7H10v7H4z',
+};
+
+const bgTone: Record<string, string> = {
+  sun: 'bg-sun-100 text-sun-700',
+  sky: 'bg-sky-100 text-sky-700',
+  leaf: 'bg-leaf-100 text-leaf-700',
+};
+---
+
+<div class="flex gap-4">
+  <div class:list={['flex h-11 w-11 shrink-0 items-center justify-center rounded-full', bgTone[tone]]}>
+    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor"><path d={icons[icon]}></path></svg>
+  </div>
+  <div>
+    <h3 class="font-display font-bold text-night">{title}</h3>
+    <p class="mt-1 text-sm leading-relaxed text-night/70">{text}</p>
+  </div>
+</div>

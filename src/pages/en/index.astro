@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import PillarCard from '../../components/PillarCard.astro';
+import ImpactCounters from '../../components/ImpactCounters.astro';
+import Testimonial from '../../components/Testimonial.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import { homeContent } from '../../data/pages/home';
+import { routeUrl } from '../../i18n/routes';
+import { getCollection } from 'astro:content';
+
+const lang = 'en' as const;
+const c = homeContent[lang];
+
+const testimonials = (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects2026')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout lang={lang} currentRoute="home" title={c.seoTitle} description={c.seoDescription}>
+  <Hero
+    eyebrow={c.heroEyebrow}
+    title={c.heroTitle}
+    subtitle={c.heroSubtitle}
+    imageLabel="JFK Home Hero"
+    tone="sky"
+    size="full"
+    primaryCta={{ label: c.heroPrimaryCta, href: routeUrl('sponsorChild', lang) }}
+    secondaryCta={{ label: c.heroSecondaryCta, href: routeUrl('donate', lang) }}
+  />
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-3xl text-center">
+      <h2 class="text-3xl sm:text-4xl">{c.visionTitle}</h2>
+      <div class="mt-6 space-y-4 text-lg leading-relaxed text-night/75">
+        {c.visionParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sky-50">
+    <div class="container-jfk">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl sm:text-4xl">{c.pillarsTitle}</h2>
+        <p class="mt-3 text-night/70">{c.pillarsSubtitle}</p>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        {c.pillars.map((pillar) => (
+          <PillarCard icon={pillar.icon} tone={pillar.tone} title={pillar.title} description={pillar.description} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-jfk">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl sm:text-4xl">{c.statsTitle}</h2>
+        <p class="mt-3 text-night/70">{c.statsSubtitle}</p>
+      </div>
+      <div class="mt-10">
+        <ImpactCounters lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-leaf-50">
+    <div class="container-jfk">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.testimonialsTitle}</h2>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        {testimonials.map((item) => (
+          <Testimonial name={item.data.name} role={item.data.role.en} quote={item.data.quote.en} tone={item.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-night text-white">
+    <div class="container-jfk grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 class="text-3xl text-white sm:text-4xl">{c.projectsBannerTitle}</h2>
+        <p class="mt-4 text-white/80">{c.projectsBannerText}</p>
+        <a href={routeUrl('projects2026', lang)} class="btn-primary mt-6 inline-flex">{c.projectsBannerCta}</a>
+      </div>
+      <div class="space-y-6">
+        {projects.map((project) => (
+          <div>
+            <p class="mb-2 font-display font-bold text-white">{project.data.title.en}</p>
+            <ProgressBar
+              goal={project.data.budgetGoal}
+              raised={project.data.budgetRaised}
+              currency={project.data.currency}
+              goalLabel="Goal"
+              raisedLabel="Raised"
+              tone={project.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sun-50">
+    <div class="container-jfk text-center">
+      <h2 class="text-3xl sm:text-4xl">{c.finalCtaTitle}</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-night/70">{c.finalCtaText}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href={routeUrl('sponsorChild', lang)} class="btn-primary">{c.finalCtaPrimary}</a>
+        <a href={routeUrl('donate', lang)} class="btn-secondary">{c.finalCtaSecondary}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

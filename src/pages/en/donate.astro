@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import CopyableField from '../../components/CopyableField.astro';
+import { donateContent } from '../../data/pages/donate';
+import { paymentInfo, fundsAllocation, annualReportUrl } from '../../data/site';
+
+const lang = 'en' as const;
+const c = donateContent[lang];
+---
+
+<BaseLayout lang={lang} currentRoute="donate" title={c.seoTitle} description={c.seoDescription} hideDonateBanner>
+  <Hero eyebrow={c.heroEyebrow} title={c.heroTitle} subtitle={c.heroSubtitle} imageLabel="Donate to JFK" tone="sun" />
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-3xl">
+      <div class="card space-y-8 p-6 sm:p-10">
+        <div>
+          <h2 class="mb-4 text-xl sm:text-2xl">{c.frequencyTitle}</h2>
+          <div class="flex gap-3" role="radiogroup" aria-label={c.frequencyTitle}>
+            <label class="freq-option flex-1 cursor-pointer rounded-lg border-2 border-sky-500 bg-sky-50 px-4 py-3 text-center font-semibold text-sky-700">
+              <input type="radio" name="frequency" value="onetime" class="sr-only" checked />
+              {c.frequencyOneTime}
+            </label>
+            <label class="freq-option flex-1 cursor-pointer rounded-lg border-2 border-night/10 px-4 py-3 text-center font-semibold text-night/70">
+              <input type="radio" name="frequency" value="monthly" class="sr-only" />
+              {c.frequencyMonthly}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="mb-4 text-xl sm:text-2xl">{c.allocationTitle}</h2>
+          <label class="sr-only" for="fleche">{c.allocationLabel}</label>
+          <select
+            id="fleche"
+            class="w-full rounded-lg border border-night/15 bg-white px-4 py-2.5 text-night shadow-sm focus:border-sky-500 focus:ring-sky-500"
+          >
+            {c.allocationOptions.map((opt) => (
+              <option value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <h2 class="mb-4 text-xl sm:text-2xl">{c.paymentTitle}</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-xl2 border border-night/10 p-5">
+              <h3 class="font-display font-bold text-night">{c.stripeTitle}</h3>
+              <p class="mt-1 text-sm text-night/70">{c.stripeText}</p>
+              <a
+                id="stripe-link"
+                href={paymentInfo.stripe.oneTimeLink}
+                data-onetime={paymentInfo.stripe.oneTimeLink}
+                data-monthly={paymentInfo.stripe.monthlyLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary mt-4 w-full"
+              >
+                {c.stripeCta}
+              </a>
+            </div>
+            <div class="rounded-xl2 border border-night/10 p-5">
+              <h3 class="font-display font-bold text-night">{c.paypalTitle}</h3>
+              <p class="mt-1 text-sm text-night/70">{c.paypalText}</p>
+              <a href={paymentInfo.paypal.link} target="_blank" rel="noopener noreferrer" class="btn-secondary mt-4 w-full">
+                {c.paypalCta}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sky-50">
+    <div class="container-jfk grid max-w-4xl gap-6 sm:grid-cols-2">
+      <div class="card p-6">
+        <h2 class="mb-2 text-lg font-bold">{c.bankTitle}</h2>
+        <p class="mb-4 text-sm text-night/70">{c.bankText}</p>
+        <div class="space-y-2">
+          <CopyableField lang={lang} label="Account name" value={paymentInfo.bankTransfer.accountName} />
+          <CopyableField lang={lang} label="IBAN" value={paymentInfo.bankTransfer.iban} />
+          <CopyableField lang={lang} label="BIC / SWIFT" value={paymentInfo.bankTransfer.bic} />
+          <CopyableField lang={lang} label="Bank" value={paymentInfo.bankTransfer.bankName} />
+        </div>
+      </div>
+      <div class="card p-6">
+        <h2 class="mb-2 text-lg font-bold">{c.mobileMoneyTitle}</h2>
+        <p class="mb-4 text-sm text-night/70">{c.mobileMoneyText}</p>
+        <div class="space-y-2">
+          {paymentInfo.mobileMoney.map((m) => (
+            <CopyableField lang={lang} label={m.provider} value={m.number} />
+          ))}
+        </div>
+      </div>
+      <p class="sm:col-span-2 text-center text-sm text-night/60">{c.referenceNote}</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-3xl">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.transparencyTitle}</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center text-night/70">{c.transparencyText}</p>
+
+      <div class="mt-10 space-y-4">
+        {fundsAllocation.map((item) => (
+          <div>
+            <div class="mb-1 flex justify-between text-sm font-semibold text-night">
+              <span>{item.labelEn}</span>
+              <span>{item.percent}%</span>
+            </div>
+            <div class="h-3 w-full overflow-hidden rounded-full bg-night/10">
+              <div class="h-full rounded-full bg-sky-500" style={`width: ${item.percent}%`}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 text-center">
+        <a href={annualReportUrl} class="btn-outline-dark inline-flex" target="_blank" rel="noopener noreferrer">
+          {c.reportCta}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const radios = document.querySelectorAll<HTMLInputElement>('input[name="frequency"]');
+  const stripeLink = document.getElementById('stripe-link') as HTMLAnchorElement | null;
+
+  radios.forEach((radio) => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.freq-option').forEach((label) => {
+        label.classList.remove('border-sky-500', 'bg-sky-50', 'text-sky-700');
+        label.classList.add('border-night/10', 'text-night/70');
+      });
+      const selectedLabel = radio.closest('.freq-option');
+      selectedLabel?.classList.add('border-sky-500', 'bg-sky-50', 'text-sky-700');
+      selectedLabel?.classList.remove('border-night/10', 'text-night/70');
+
+      if (stripeLink) {
+        stripeLink.href = radio.value === 'monthly' ? stripeLink.dataset.monthly ?? '#' : stripeLink.dataset.onetime ?? '#';
+      }
+    });
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  const fleche = params.get('fleche');
+  const select = document.getElementById('fleche') as HTMLSelectElement | null;
+  if (fleche && select) {
+    const optionExists = Array.from(select.options).some((o) => o.value === fleche);
+    if (optionExists) select.value = fleche;
+  }
+</script>

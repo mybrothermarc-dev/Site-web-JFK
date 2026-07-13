@@ -1,0 +1,11 @@
+{
+  "firstName": "Hasina",
+  "age": 9,
+  "photoPlaceholder": "sun",
+  "status": "sponsored",
+  "order": 4,
+  "bio": {
+    "fr": "Hasina aime le football et la lecture. Depuis son arrivée, elle a fait d’immenses progrès en malgache et en français.",
+    "en": "Hasina loves football and reading. Since arriving, she has made huge progress in Malagasy and French."
+  }
+}

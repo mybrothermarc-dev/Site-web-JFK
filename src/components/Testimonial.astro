@@ -1,0 +1,27 @@
+---
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Props {
+  name: string;
+  role: string;
+  quote: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+}
+const { name, role, quote, tone = 'sun' } = Astro.props;
+---
+
+<figure class="card flex h-full flex-col gap-4 p-6">
+  <svg viewBox="0 0 24 24" class="h-8 w-8 text-sun-400" fill="currentColor" aria-hidden="true">
+    <path d="M7 7c-2.2 0-4 1.8-4 4v6h6v-6H6c0-1.1.9-2 2-2V7zm10 0c-2.2 0-4 1.8-4 4v6h6v-6h-3c0-1.1.9-2 2-2V7z" />
+  </svg>
+  <blockquote class="flex-1 font-display text-lg font-semibold leading-snug text-night">
+    « {quote} »
+  </blockquote>
+  <figcaption class="flex items-center gap-3">
+    <PlaceholderImage tone={tone} label={name} kind="general" class="h-12 w-12 shrink-0 rounded-full" />
+    <div>
+      <p class="font-semibold text-night">{name}</p>
+      <p class="text-sm text-night/60">{role}</p>
+    </div>
+  </figcaption>
+</figure>

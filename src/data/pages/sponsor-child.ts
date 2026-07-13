@@ -1,0 +1,128 @@
+export const sponsorChildContent = {
+  fr: {
+    seoTitle: 'Parrainer un enfant',
+    seoDescription:
+      "Parrainez un enfant du centre Paradisakely à Madagascar : hébergement, nourriture, scolarisation et accompagnement complet. Recevez des nouvelles de votre filleul deux fois par an.",
+    heroEyebrow: 'Parrainage d’enfant',
+    heroTitle: 'Offrez un avenir à un enfant de Paradisakely',
+    heroSubtitle: 'Hébergement, nourriture, scolarité et amour de famille — votre parrainage change une vie entière.',
+    heroCta: 'Découvrir les enfants',
+    storyTitle: 'Pourquoi parrainer un enfant ?',
+    storyParagraphs: [
+      'À Madagascar, des millions de personnes vivent dans des villages reculés, dans l’extrême pauvreté, sans accès facile à l’éducation ni aux soins de santé.',
+      'Notre centre d’accueil Paradisakely ouvre ses portes à environ 50 nouveaux enfants vulnérables chaque année, leur offrant un foyer stable, de l’affection et un chemin vers l’avenir.',
+      'Grâce à votre parrainage, un enfant reçoit bien plus qu’une aide financière : il reçoit une famille, une éducation, et l’espérance de l’Évangile.',
+    ],
+    coversTitle: 'Ce que couvre votre parrainage',
+    covers: [
+      { icon: 'home' as const, title: 'Hébergement', text: 'Un toit sûr et stable au centre Paradisakely.' },
+      { icon: 'meal' as const, title: 'Nourriture', text: 'Des repas équilibrés chaque jour de l’année.' },
+      { icon: 'school' as const, title: 'Scolarisation', text: 'L’accès à une éducation de qualité à Paradisakely Private School.' },
+      { icon: 'supplies' as const, title: 'Fournitures et uniforme', text: 'Tout le matériel scolaire nécessaire pour apprendre sereinement.' },
+      { icon: 'medical' as const, title: 'Suivi médical', text: 'Des soins de santé réguliers et un accès aux missions médicales.' },
+      { icon: 'heart' as const, title: 'Encadrement spirituel et affectif', text: 'Un accompagnement plein d’amour, ancré dans la foi chrétienne.' },
+    ],
+    tiersTitle: 'Choisissez votre formule de parrainage',
+    tiersSubtitle: 'Un engagement mensuel simple, que vous pouvez ajuster à tout moment.',
+    galleryTitle: 'Les enfants qui attendent un parrain',
+    gallerySubtitle: 'Chaque enfant mérite une famille. Découvrez leurs sourires et leurs rêves.',
+    protectionTitle: 'Protection de l’enfance : notre engagement',
+    protectionText:
+      'Pour protéger chaque enfant, nous ne publions jamais de nom de famille, de localisation précise ni d’information sensible. Les photos publiées le sont uniquement avec le consentement des enfants et de leurs tuteurs légaux.',
+    protectionCta: 'Lire notre politique complète',
+    journeyTitle: 'Le parcours de parrainage, en 4 étapes',
+    journey: [
+      { step: '1', title: 'Je choisis un enfant', text: 'Parcourez les profils et laissez-vous toucher par une histoire.' },
+      { step: '2', title: 'Je m’engage', text: 'Choisissez votre formule et validez votre parrainage mensuel.' },
+      { step: '3', title: 'Je reçois des nouvelles', text: 'Deux fois par an, recevez des nouvelles et des photos de votre filleul.' },
+      { step: '4', title: 'J’écris à mon filleul', text: 'Envoyez des mots d’encouragement qui lui seront transmis avec joie.' },
+    ],
+    faqTitle: 'Questions fréquentes',
+    faq: [
+      {
+        q: 'Mon don est-il déductible des impôts ?',
+        a: 'Selon votre pays de résidence, votre don peut ouvrir droit à une réduction fiscale. Contactez-nous pour connaître les modalités applicables à votre situation.',
+      },
+      {
+        q: 'Sur quelle durée dois-je m’engager ?',
+        a: 'Le parrainage est un engagement moral, idéalement pensé sur plusieurs années pour accompagner l’enfant durablement, mais vous restez libre de son évolution.',
+      },
+      {
+        q: 'Puis-je arrêter mon parrainage à tout moment ?',
+        a: 'Oui, vous pouvez ajuster ou arrêter votre parrainage à tout moment en nous contactant ; nous vous demandons simplement de nous prévenir pour organiser la transition de l’enfant.',
+      },
+      {
+        q: 'Puis-je communiquer directement avec mon filleul ?',
+        a: 'Oui, vous pouvez lui écrire par notre intermédiaire. Toute correspondance passe par l’équipe JFK pour garantir la sécurité et le bien-être de l’enfant.',
+      },
+    ],
+    formTitle: 'Faire une demande de parrainage',
+    formSubtitle: 'Remplissez ce formulaire, nous revenons vers vous sous 48h pour finaliser votre parrainage.',
+    formSubject: 'Nouvelle demande de parrainage d’enfant',
+    ctaFinalTitle: 'Prêt à changer la vie d’un enfant ?',
+    ctaFinalCta: 'Je fais une demande de parrainage',
+  },
+  en: {
+    seoTitle: 'Sponsor a Child',
+    seoDescription:
+      'Sponsor a child from the Paradisakely center in Madagascar: housing, food, education and full support. Receive news about your sponsored child twice a year.',
+    heroEyebrow: 'Child Sponsorship',
+    heroTitle: 'Give a future to a Paradisakely child',
+    heroSubtitle: 'Housing, food, education and family love — your sponsorship changes an entire life.',
+    heroCta: 'Meet the children',
+    storyTitle: 'Why sponsor a child?',
+    storyParagraphs: [
+      'In Madagascar, millions of people live in remote villages, in extreme poverty, without easy access to education or healthcare.',
+      'Our Paradisakely care center welcomes around 50 new vulnerable children every year, offering them a stable home, love, and a path toward the future.',
+      'Through your sponsorship, a child receives far more than financial help: they receive a family, an education, and the hope of the Gospel.',
+    ],
+    coversTitle: 'What your sponsorship covers',
+    covers: [
+      { icon: 'home' as const, title: 'Housing', text: 'A safe and stable roof at the Paradisakely center.' },
+      { icon: 'meal' as const, title: 'Food', text: 'Balanced meals every day of the year.' },
+      { icon: 'school' as const, title: 'Education', text: 'Access to quality education at Paradisakely Private School.' },
+      { icon: 'supplies' as const, title: 'Supplies and uniform', text: 'All the school materials needed to learn with peace of mind.' },
+      { icon: 'medical' as const, title: 'Medical follow-up', text: 'Regular healthcare and access to medical missions.' },
+      { icon: 'heart' as const, title: 'Spiritual and emotional care', text: 'Loving support, rooted in the Christian faith.' },
+    ],
+    tiersTitle: 'Choose your sponsorship plan',
+    tiersSubtitle: 'A simple monthly commitment, which you can adjust at any time.',
+    galleryTitle: 'Children waiting for a sponsor',
+    gallerySubtitle: 'Every child deserves a family. Discover their smiles and their dreams.',
+    protectionTitle: 'Child protection: our commitment',
+    protectionText:
+      'To protect every child, we never publish last names, precise locations, or sensitive information. Published photos are used only with the consent of the children and their legal guardians.',
+    protectionCta: 'Read our full policy',
+    journeyTitle: 'The sponsorship journey, in 4 steps',
+    journey: [
+      { step: '1', title: 'I choose a child', text: 'Browse the profiles and let a story move you.' },
+      { step: '2', title: 'I commit', text: 'Choose your plan and confirm your monthly sponsorship.' },
+      { step: '3', title: 'I receive news', text: 'Twice a year, receive news and photos of your sponsored child.' },
+      { step: '4', title: 'I write to my sponsored child', text: 'Send words of encouragement that will be joyfully delivered.' },
+    ],
+    faqTitle: 'Frequently asked questions',
+    faq: [
+      {
+        q: 'Is my donation tax-deductible?',
+        a: 'Depending on your country of residence, your donation may qualify for a tax benefit. Contact us to learn what applies to your situation.',
+      },
+      {
+        q: 'How long is the commitment?',
+        a: 'Sponsorship is a moral commitment, ideally sustained over several years to support the child long-term, but you remain free to adjust it.',
+      },
+      {
+        q: 'Can I stop my sponsorship at any time?',
+        a: 'Yes, you can adjust or stop your sponsorship at any time by contacting us; we simply ask that you let us know so we can organize the transition for the child.',
+      },
+      {
+        q: 'Can I communicate directly with my sponsored child?',
+        a: 'Yes, you can write to them through us. All correspondence goes through the JFK team to ensure the child’s safety and well-being.',
+      },
+    ],
+    formTitle: 'Submit a sponsorship request',
+    formSubtitle: 'Fill out this form and we’ll get back to you within 48 hours to finalize your sponsorship.',
+    formSubject: 'New child sponsorship request',
+    ctaFinalTitle: 'Ready to change a child’s life?',
+    ctaFinalCta: 'I want to sponsor a child',
+  },
+};

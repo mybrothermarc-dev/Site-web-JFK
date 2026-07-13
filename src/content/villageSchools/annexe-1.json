@@ -1,0 +1,11 @@
+{
+  "villageName": {
+    "fr": "École annexe n°1 — village en zone forestière",
+    "en": "Satellite school #1 — forest area village"
+  },
+  "budgetGoal": 3500,
+  "budgetRaised": 1200,
+  "currency": "USD",
+  "photoPlaceholder": "leaf",
+  "order": 1
+}

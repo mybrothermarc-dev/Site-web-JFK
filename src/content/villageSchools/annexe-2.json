@@ -1,0 +1,11 @@
+{
+  "villageName": {
+    "fr": "École annexe n°2 — village côtier isolé",
+    "en": "Satellite school #2 — isolated coastal village"
+  },
+  "budgetGoal": 4000,
+  "budgetRaised": 600,
+  "currency": "USD",
+  "photoPlaceholder": "sky",
+  "order": 2
+}

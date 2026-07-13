@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import WebForm from '../../components/WebForm.astro';
+import FormField from '../../components/FormField.astro';
+import MapMadagascar from '../../components/MapMadagascar.astro';
+import { contactContent } from '../../data/pages/contact';
+import { siteConfig } from '../../data/site';
+import { useTranslations } from '../../i18n/ui';
+
+const lang = 'fr' as const;
+const c = contactContent[lang];
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} currentRoute="contact" title={c.seoTitle} description={c.seoDescription}>
+  <Hero eyebrow={c.heroEyebrow} title={c.heroTitle} subtitle={c.heroSubtitle} imageLabel="Contact JFK" tone="leaf" />
+
+  <section class="section bg-white">
+    <div class="container-jfk grid gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-2xl sm:text-3xl">{c.formTitle}</h2>
+        <div class="card mt-6 p-6 sm:p-8">
+          <WebForm lang={lang} subject={c.formSubject} formId="form-contact">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <FormField label={t.form.name} name="name" type="text" />
+              <FormField label={t.form.email} name="email" type="email" />
+            </div>
+            <div class="mt-5">
+              <FormField label={t.form.subject} name="subject_detail" type="text" required={false} />
+            </div>
+            <div class="mt-5">
+              <FormField label={t.form.message} name="message" type="textarea" />
+            </div>
+          </WebForm>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl sm:text-3xl">{c.coordsTitle}</h2>
+        <ul class="mt-6 space-y-4 text-night/80">
+          <li class="flex gap-3">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 shrink-0 text-sky-600" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>
+            <span>{siteConfig.address}</span>
+          </li>
+          <li class="flex gap-3">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 shrink-0 text-sky-600" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1.1L6.6 10.8z"/></svg>
+            <a class="hover:text-sky-700" href={`tel:${siteConfig.contacts.mobile.replace(/\s/g, '')}`}>{siteConfig.contacts.mobile}</a>
+          </li>
+          <li class="flex gap-3">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 shrink-0 text-leaf-600" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-5-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .5 0 .7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.1.2-.2.3-.4.5l-.5.6c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.5 1.5.3.1.5.1.7-.1l.7-.8c.2-.3.5-.2.8-.1l1.9.9c.3.1.5.2.5.4.1.2.1 1-.1 1.7z"/></svg>
+            <a class="hover:text-leaf-700" href={siteConfig.contacts.whatsappLink} target="_blank" rel="noopener noreferrer">WhatsApp {siteConfig.contacts.whatsapp}</a>
+          </li>
+          <li class="flex gap-3">
+            <svg viewBox="0 0 24 24" class="h-6 w-6 shrink-0 text-sky-600" fill="currentColor"><path d="M4 4h16v16H4V4zm2 2v.01L12 12l6-5.99V6H6zm12 12v-9.4l-6 5.99-6-5.99V18h12z"/></svg>
+            <a class="hover:text-sky-700" href={`mailto:${siteConfig.contacts.email}`}>{siteConfig.contacts.email}</a>
+          </li>
+        </ul>
+
+        <h3 class="mt-10 mb-4 font-display text-lg font-bold">{c.mapTitle}</h3>
+        <MapMadagascar lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sky-50">
+    <div class="container-jfk grid gap-6 lg:grid-cols-3">
+      <div class="card p-6">
+        <h2 class="font-display text-lg font-bold text-night">{c.shortTermTitle}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-night/70">{c.shortTermText}</p>
+      </div>
+      <div class="card p-6">
+        <h2 class="font-display text-lg font-bold text-night">{c.tourismTitle}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-night/70">{c.tourismText}</p>
+      </div>
+      <div class="card p-6">
+        <h2 class="font-display text-lg font-bold text-night">{c.partnerTitle}</h2>
+        <p class="mt-3 text-sm leading-relaxed text-night/70">{c.partnerText}</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

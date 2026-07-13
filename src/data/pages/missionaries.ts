@@ -1,0 +1,68 @@
+export const missionariesContent = {
+  fr: {
+    seoTitle: 'Soutenir les missionnaires',
+    seoDescription:
+      'Soutenez un missionnaire de Jesus Family Kingdom envoyé dans les villages les plus enclavés de Madagascar pour évangéliser, implanter des églises et former des leaders locaux.',
+    heroEyebrow: 'Soutenir un missionnaire',
+    heroTitle: 'Envoyés là où personne d’autre ne va',
+    heroSubtitle: 'Nos missionnaires atteignent à pied les villages les plus reculés de Madagascar, pour annoncer l’Évangile et former des leaders.',
+    heroCta: 'Découvrir les missionnaires',
+    contextTitle: 'Une mission dans les zones les plus enclavées',
+    contextParagraphs: [
+      'Nos missionnaires sont envoyés dans des zones souvent inaccessibles par la route — parfois à plusieurs jours de marche du village le plus proche.',
+      'Leur mission : évangéliser, implanter des églises locales, et former des leaders capables de faire grandir la foi de leur communauté sur le long terme.',
+      'Votre soutien mensuel leur permet de rester sur le terrain, durablement, aux côtés des villages qu’ils servent.',
+    ],
+    galleryTitle: 'Nos missionnaires envoyés sur le terrain',
+    coversTitle: 'Ce que couvre votre soutien mensuel',
+    covers: [
+      { icon: 'home' as const, title: 'Subsistance de la famille', text: 'De quoi vivre dignement pendant que le missionnaire se consacre à plein temps au ministère.' },
+      { icon: 'travel' as const, title: 'Déplacements en brousse', text: 'Transport et logistique pour atteindre des villages parfois accessibles uniquement à pied.' },
+      { icon: 'book' as const, title: 'Matériel de ministère', text: 'Bibles, manuels de formation de disciples et supports pédagogiques.' },
+    ],
+    urgentTitle: 'Besoins ponctuels : les grandes missions et urgences médicales',
+    urgentText:
+      'Au-delà du soutien mensuel, des besoins ponctuels surviennent régulièrement : urgences médicales dans les villages (environ 350 $ par cas identifié), équipement de terrain, ou participation aux grandes missions bimestrielles combinant volet médical, dentaire et évangélisation.',
+    ctaMonthly: 'Je soutiens ce missionnaire',
+    ctaOneTime: 'Don ponctuel pour les missions',
+    ctaPray: 'Je m’engage à prier',
+    prayFormTitle: 'Recevoir la lettre de nouvelles et s’engager à prier',
+    prayFormSubtitle: 'Laissez-nous vos coordonnées pour recevoir les nouvelles de nos missionnaires et prier avec nous.',
+    prayFormSubject: 'Engagement à prier pour les missionnaires JFK',
+    ctaFinalTitle: 'Une famille de missionnaires a besoin de vous',
+    ctaFinalText: 'Votre soutien, mensuel ou ponctuel, permet à l’Évangile d’atteindre des villages qui n’ont jamais entendu parler de Jésus.',
+  },
+  en: {
+    seoTitle: 'Support Missionaries',
+    seoDescription:
+      'Support a Jesus Family Kingdom missionary sent to the most remote villages of Madagascar to evangelize, plant churches and train local leaders.',
+    heroEyebrow: 'Support a Missionary',
+    heroTitle: 'Sent where no one else goes',
+    heroSubtitle: 'Our missionaries reach Madagascar’s most remote villages on foot, to share the Gospel and train leaders.',
+    heroCta: 'Meet the missionaries',
+    contextTitle: 'A mission in the most remote areas',
+    contextParagraphs: [
+      'Our missionaries are sent to areas often inaccessible by road — sometimes several days’ walk from the nearest village.',
+      'Their mission: evangelize, plant local churches, and train leaders able to grow their community’s faith for the long term.',
+      'Your monthly support allows them to stay in the field, sustainably, alongside the villages they serve.',
+    ],
+    galleryTitle: 'Our missionaries sent into the field',
+    coversTitle: 'What your monthly support covers',
+    covers: [
+      { icon: 'home' as const, title: 'Family subsistence', text: 'Enough to live with dignity while the missionary devotes themselves full-time to ministry.' },
+      { icon: 'travel' as const, title: 'Bush travel', text: 'Transport and logistics to reach villages sometimes accessible only on foot.' },
+      { icon: 'book' as const, title: 'Ministry materials', text: 'Bibles, discipleship training manuals and teaching resources.' },
+    ],
+    urgentTitle: 'Occasional needs: major outreaches and medical emergencies',
+    urgentText:
+      'Beyond monthly support, occasional needs arise regularly: medical emergencies in villages (around $350 per identified case), field equipment, or participation in the bimonthly major outreaches combining medical, dental and evangelism efforts.',
+    ctaMonthly: 'Support this missionary',
+    ctaOneTime: 'One-time gift for missions',
+    ctaPray: 'I commit to pray',
+    prayFormTitle: 'Receive the newsletter and commit to pray',
+    prayFormSubtitle: 'Leave us your details to receive news from our missionaries and pray with us.',
+    prayFormSubject: 'Prayer commitment for JFK missionaries',
+    ctaFinalTitle: 'A family of missionaries needs you',
+    ctaFinalText: 'Your support, monthly or one-time, allows the Gospel to reach villages that have never heard of Jesus.',
+  },
+};

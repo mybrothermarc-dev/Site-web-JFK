@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import IconFeature from '../../components/IconFeature.astro';
+import ProfileCard from '../../components/ProfileCard.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import Testimonial from '../../components/Testimonial.astro';
+import { teachersContent } from '../../data/pages/teachers';
+import { teacherSupport } from '../../data/site';
+import { useTranslations } from '../../i18n/ui';
+import { routeUrl } from '../../i18n/routes';
+import { getCollection } from 'astro:content';
+
+const lang = 'fr' as const;
+const c = teachersContent[lang];
+const t = useTranslations(lang);
+
+const teachers = (await getCollection('teachers')).sort((a, b) => a.data.order - b.data.order);
+const schools = (await getCollection('villageSchools')).sort((a, b) => a.data.order - b.data.order);
+const villageTestimonial = (await getCollection('testimonials')).find((item) => item.id === 'enseignant-village');
+const donateLink = `${routeUrl('donate', lang)}?fleche=enseignants`;
+---
+
+<BaseLayout lang={lang} currentRoute="supportTeachers" title={c.seoTitle} description={c.seoDescription}>
+  <Hero
+    eyebrow={c.heroEyebrow}
+    title={c.heroTitle}
+    subtitle={c.heroSubtitle}
+    imageLabel="École annexe JFK"
+    tone="sun"
+    primaryCta={{ label: c.heroCta, href: '#enseignants' }}
+  />
+
+  <section class="section bg-white">
+    <div class="container-jfk max-w-3xl">
+      <h2 class="text-3xl sm:text-4xl">{c.contextTitle}</h2>
+      <div class="mt-6 space-y-4 text-lg leading-relaxed text-night/75">
+        {c.contextParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section id="enseignants" class="section bg-sun-50 scroll-mt-24">
+    <div class="container-jfk">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.galleryTitle}</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {teachers.map((teacher) => (
+          <ProfileCard
+            name={teacher.data.firstName}
+            subtitle={teacher.data.village}
+            description={teacher.data.summary.fr}
+            tone={teacher.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            kind="teacher"
+            ctaLabel={t.common.supportTeacher}
+            ctaHref={donateLink}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-jfk">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl sm:text-4xl">{c.coversTitle}</h2>
+        <p class="mt-3 font-display text-2xl font-extrabold text-sky-600">
+          {teacherSupport.monthlyAmount}&nbsp;€ {t.common.perMonth}
+        </p>
+      </div>
+      <div class="mx-auto mt-10 grid max-w-3xl gap-x-10 gap-y-8 sm:grid-cols-3">
+        {c.covers.map((item, i) => (
+          <IconFeature icon={item.icon} title={item.title} text={item.text} tone={(['sun', 'sky', 'leaf'] as const)[i % 3]} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-leaf-50">
+    <div class="container-jfk max-w-3xl">
+      <h2 class="text-center text-3xl sm:text-4xl">{c.schoolProjectTitle}</h2>
+      <p class="mt-4 text-center leading-relaxed text-night/75">{c.schoolProjectText}</p>
+      <p class="mt-4 text-center font-display text-xl font-bold text-night">
+        {teacherSupport.schoolProjectMin.toLocaleString('fr-FR')}&nbsp;–&nbsp;{teacherSupport.schoolProjectMax.toLocaleString('fr-FR')}&nbsp;$ {lang === 'fr' ? 'par village' : 'per village'}
+      </p>
+
+      <div class="mt-10 space-y-8">
+        {schools.map((school) => (
+          <div class="card p-6">
+            <p class="mb-3 font-display font-bold text-night">{school.data.villageName.fr}</p>
+            <ProgressBar
+              goal={school.data.budgetGoal}
+              raised={school.data.budgetRaised}
+              currency={school.data.currency}
+              goalLabel="Objectif"
+              raisedLabel="Réuni"
+              tone={school.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            />
+          </div>
+        ))}
+      </div>
+      <div class="mt-8 text-center">
+        <a href={donateLink} class="btn-primary">{c.schoolProjectCta}</a>
+      </div>
+    </div>
+  </section>
+
+  {villageTestimonial && (
+    <section class="section bg-white">
+      <div class="container-jfk max-w-2xl">
+        <h2 class="mb-8 text-center text-3xl sm:text-4xl">{c.testimonialTitle}</h2>
+        <Testimonial
+          name={villageTestimonial.data.name}
+          role={villageTestimonial.data.role.fr}
+          quote={villageTestimonial.data.quote.fr}
+          tone={villageTestimonial.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+        />
+      </div>
+    </section>
+  )}
+
+  <section class="section bg-night text-white">
+    <div class="container-jfk text-center">
+      <h2 class="text-3xl text-white sm:text-4xl">{c.ctaFinalTitle}</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-white/80">{c.ctaFinalText}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href={donateLink} class="btn-primary">{c.ctaMonthly}</a>
+        <a href={donateLink} class="btn-secondary">{c.schoolProjectCta}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

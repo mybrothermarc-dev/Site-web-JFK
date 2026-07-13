@@ -1,0 +1,90 @@
+---
+/**
+ * Formulaire générique branché sur Web3Forms (service gratuit, sans serveur).
+ * Remplace la clé WEB3FORMS_ACCESS_KEY_A_REMPLACER dans src/data/site.ts par ta propre
+ * clé d'accès obtenue gratuitement sur https://web3forms.com — voir le README.
+ */
+import { web3FormsAccessKey } from '../data/site';
+import { useTranslations } from '../i18n/ui';
+import type { Lang } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+  subject: string;
+  formId: string;
+}
+const { lang, subject, formId } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<form
+  id={formId}
+  class="jfk-form space-y-5"
+  data-success-text={t.form.success}
+  data-error-text={t.form.error}
+  data-sending-text={t.form.submitting}
+>
+  <input type="hidden" name="access_key" value={web3FormsAccessKey} />
+  <input type="hidden" name="subject" value={subject} />
+  <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+  <slot />
+
+  <div class="form-status hidden rounded-lg p-3 text-sm" role="status" aria-live="polite"></div>
+
+  <button type="submit" class="btn-primary w-full sm:w-auto">
+    <span class="btn-label">{t.form.submit}</span>
+  </button>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.jfk-form').forEach((form) => {
+    if (form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const label = button?.querySelector<HTMLElement>('.btn-label');
+      const status = form.querySelector<HTMLElement>('.form-status');
+      const sendingText = form.dataset.sendingText || '';
+      const successText = form.dataset.successText || '';
+      const errorText = form.dataset.errorText || '';
+      const originalLabel = label?.textContent || '';
+
+      if (label) label.textContent = sendingText;
+      if (button) button.disabled = true;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData,
+        });
+        const result = await response.json();
+
+        if (status) {
+          status.classList.remove('hidden');
+          if (result.success) {
+            status.textContent = successText;
+            status.className = 'form-status rounded-lg p-3 text-sm bg-leaf-50 text-leaf-700';
+            form.reset();
+          } else {
+            status.textContent = errorText;
+            status.className = 'form-status rounded-lg p-3 text-sm bg-red-50 text-red-700';
+          }
+        }
+      } catch {
+        if (status) {
+          status.classList.remove('hidden');
+          status.textContent = errorText;
+          status.className = 'form-status rounded-lg p-3 text-sm bg-red-50 text-red-700';
+        }
+      } finally {
+        if (label) label.textContent = originalLabel;
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>

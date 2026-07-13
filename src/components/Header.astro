@@ -1,0 +1,123 @@
+---
+import Logo from './Logo.astro';
+import { routes, routeUrl, otherLang, type RouteKey, type Lang } from '../i18n/routes';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  currentRoute: RouteKey;
+}
+const { lang, currentRoute } = Astro.props;
+const t = useTranslations(lang);
+
+const navItems: { key: RouteKey; label: string }[] = [
+  { key: 'home', label: t.nav.home },
+  { key: 'mission', label: t.nav.mission },
+  { key: 'sponsorChild', label: t.nav.sponsorChild },
+  { key: 'supportMissionaries', label: t.nav.supportMissionaries },
+  { key: 'supportTeachers', label: t.nav.supportTeachers },
+  { key: 'projects2026', label: t.nav.projects2026 },
+  { key: 'contact', label: t.nav.contact },
+];
+
+const otherLangCode = otherLang(lang);
+const otherLangUrl = routeUrl(currentRoute, otherLangCode);
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm">
+  <div class="container-jfk flex h-20 items-center justify-between gap-4">
+    <a href={routeUrl('home', lang)} class="flex items-center gap-3 shrink-0">
+      <Logo class="h-11 w-11" />
+      <span class="font-display text-lg font-bold leading-tight text-night sm:text-xl">
+        Jesus Family<br class="sm:hidden" /> Kingdom
+      </span>
+    </a>
+
+    <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="hidden items-center gap-1 xl:flex">
+      {navItems.map((item) => (
+        <a
+          href={routeUrl(item.key, lang)}
+          aria-current={currentRoute === item.key ? 'page' : undefined}
+          class:list={[
+            'rounded-full px-3 py-2 text-sm font-semibold transition-colors hover:bg-sky-50 hover:text-sky-700',
+            currentRoute === item.key ? 'text-sky-700 bg-sky-50' : 'text-night/80',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <a
+        href={otherLangUrl}
+        class="rounded-full border border-night/15 px-3 py-1.5 text-sm font-semibold text-night/70 hover:border-sky-500 hover:text-sky-700"
+        aria-label={lang === 'fr' ? 'Switch to English' : 'Passer en français'}
+      >
+        {lang === 'fr' ? 'EN' : 'FR'}
+      </a>
+      <a href={routeUrl('donate', lang)} class="btn-primary">
+        {t.nav.donate}
+      </a>
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="flex items-center justify-center rounded-lg p-2 text-night xl:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={lang === 'fr' ? 'Ouvrir le menu' : 'Open menu'}
+    >
+      <svg id="icon-open" viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+      <svg id="icon-close" viewBox="0 0 24 24" class="hidden h-7 w-7" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-menu"
+    class="hidden flex-col gap-1 border-t border-night/10 bg-white px-4 py-4 xl:hidden"
+    aria-label={lang === 'fr' ? 'Navigation mobile' : 'Mobile navigation'}
+  >
+    {navItems.map((item) => (
+      <a
+        href={routeUrl(item.key, lang)}
+        aria-current={currentRoute === item.key ? 'page' : undefined}
+        class:list={[
+          'rounded-lg px-3 py-2.5 text-base font-semibold',
+          currentRoute === item.key ? 'bg-sky-50 text-sky-700' : 'text-night/80',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))}
+    <div class="mt-2 flex items-center gap-3 border-t border-night/10 pt-3">
+      <a href={otherLangUrl} class="rounded-full border border-night/15 px-3 py-1.5 text-sm font-semibold text-night/70">
+        {lang === 'fr' ? 'EN' : 'FR'}
+      </a>
+      <a href={routeUrl('donate', lang)} class="btn-primary flex-1">
+        {t.nav.donate}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    menu?.classList.toggle('hidden');
+    menu?.classList.toggle('flex');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+  });
+</script>

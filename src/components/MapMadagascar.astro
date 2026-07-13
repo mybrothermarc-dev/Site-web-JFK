@@ -1,0 +1,47 @@
+---
+import { actionZones } from '../data/site';
+import type { Lang } from '../i18n/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<div class="grid gap-8 lg:grid-cols-[1.2fr,1fr] lg:items-center">
+  <div class="card p-4 sm:p-6">
+    <svg viewBox="0 0 100 100" class="mx-auto h-auto w-full max-w-md" role="img" aria-label={lang === 'fr' ? 'Carte stylisée de Madagascar avec les zones d’action de JFK' : 'Stylized map of Madagascar with JFK’s areas of action'}>
+      <path
+        d="M40,4 C54,4 59,14 61,24 C64,34 71,39 68,50 C66,60 59,64 57,74 C55,84 49,96 41,96 C34,96 29,85 31,75 C33,65 27,55 29,45 C31,35 24,26 29,16 C32,9 36,4 40,4 Z"
+        class="fill-leaf-100 stroke-leaf-500"
+        stroke-width="1.2"
+      ></path>
+
+      {actionZones.map((zone) => (
+        <g>
+          <circle
+            cx={zone.x}
+            cy={zone.y}
+            r={zone.isHQ ? 2.6 : 1.9}
+            class={zone.isHQ ? 'fill-sun-500 stroke-white' : 'fill-sky-600 stroke-white'}
+            stroke-width="0.6"
+          ></circle>
+        </g>
+      ))}
+    </svg>
+  </div>
+
+  <div>
+    <ul class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
+      {actionZones.map((zone) => (
+        <li class="flex items-center gap-2 text-sm">
+          <span class:list={['inline-block h-2.5 w-2.5 rounded-full', zone.isHQ ? 'bg-sun-500' : 'bg-sky-600']}></span>
+          <span class:list={['text-night/80', zone.isHQ && 'font-bold text-night']}>
+            {zone.name}
+            {zone.isHQ && (lang === 'fr' ? ' (siège)' : ' (HQ)')}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+{
+  "title": {
+    "fr": "Dortoir de l’orphelinat",
+    "en": "Orphanage dormitory"
+  },
+  "description": {
+    "fr": "Construction d’un nouveau dortoir à Paradisakely pour accueillir dignement les enfants vulnérables accueillis chaque année, environ 50 nouveaux enfants par an.",
+    "en": "Building a new dormitory at Paradisakely to provide dignified housing for the vulnerable children welcomed each year — around 50 new children annually."
+  },
+  "budgetGoal": 35000,
+  "budgetRaised": 9500,
+  "currency": "USD",
+  "photoPlaceholder": "leaf",
+  "order": 2
+}

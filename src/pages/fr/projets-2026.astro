@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import PlaceholderImage from '../../components/PlaceholderImage.astro';
+import { projects2026Content } from '../../data/pages/projects2026';
+import { routeUrl } from '../../i18n/routes';
+import { getCollection } from 'astro:content';
+
+const lang = 'fr' as const;
+const c = projects2026Content[lang];
+const projects = (await getCollection('projects2026')).sort((a, b) => a.data.order - b.data.order);
+const donateLink = `${routeUrl('donate', lang)}?fleche=projets-2026`;
+---
+
+<BaseLayout lang={lang} currentRoute="projects2026" title={c.seoTitle} description={c.seoDescription}>
+  <Hero eyebrow={c.heroEyebrow} title={c.heroTitle} subtitle={c.heroSubtitle} imageLabel="Projets 2026 JFK" tone="sky" />
+
+  <section class="section bg-white">
+    <div class="container-jfk space-y-14">
+      {projects.map((project, i) => (
+        <div class:list={['grid gap-8 lg:grid-cols-2 lg:items-center', i % 2 === 1 && 'lg:[&>*:first-child]:order-2']}>
+          <PlaceholderImage
+            tone={project.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            label={project.data.title.fr}
+            kind="project"
+            class="aspect-[4/3] w-full rounded-xl2"
+          />
+          <div class="card p-6 sm:p-8">
+            <h2 class="text-2xl sm:text-3xl">{project.data.title.fr}</h2>
+            <p class="mt-4 leading-relaxed text-night/75">{project.data.description.fr}</p>
+            <div class="mt-6">
+              <ProgressBar
+                goal={project.data.budgetGoal}
+                raised={project.data.budgetRaised}
+                currency={project.data.currency}
+                goalLabel={c.goalLabel}
+                raisedLabel={c.raisedLabel}
+                tone={project.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+              />
+            </div>
+            <a href={donateLink} class="btn-primary mt-6 inline-flex">{c.ctaProject}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

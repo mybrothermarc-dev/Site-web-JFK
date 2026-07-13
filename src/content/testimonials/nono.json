@@ -1,0 +1,13 @@
+{
+  "name": "Nono",
+  "photoPlaceholder": "sun",
+  "order": 1,
+  "role": {
+    "fr": "Ancien guérisseur traditionnel d’Ikongo, aujourd’hui responsable d’église",
+    "en": "Former traditional healer from Ikongo, now church leader"
+  },
+  "quote": {
+    "fr": "Jésus m’aime et Il m’a sauvé. Aujourd’hui je prends soin de 50 orphelins comme mes propres enfants.",
+    "en": "Jesus loves me and He saved me. Today I care for 50 orphans as my own children."
+  }
+}

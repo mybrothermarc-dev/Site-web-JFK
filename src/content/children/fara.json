@@ -1,0 +1,11 @@
+{
+  "firstName": "Fara",
+  "age": 8,
+  "photoPlaceholder": "sun",
+  "status": "available",
+  "order": 1,
+  "bio": {
+    "fr": "Fara adore chanter et dessiner. Arrivée récemment à Paradisakely, elle apprend vite et rêve de devenir institutrice.",
+    "en": "Fara loves singing and drawing. Recently arrived at Paradisakely, she learns fast and dreams of becoming a teacher."
+  }
+}
