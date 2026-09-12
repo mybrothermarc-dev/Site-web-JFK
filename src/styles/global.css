@@ -3,16 +3,64 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Échelle z-index sémantique */
+    --z-header: 50;
+    --z-banner: 40;
+    --z-menu: 60;
+    --z-toast: 80;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply font-body text-night bg-white antialiased;
+    @apply bg-paper text-ink-800 antialiased;
+    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    font-feature-settings: 'ss01', 'cv01';
   }
 
   h1, h2, h3, h4 {
-    @apply font-display font-bold text-night;
+    @apply font-display text-ink-800;
+    font-weight: 700;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  /* Échelle fluide — Petrona en display, plafond ~5.25rem, jamais criard */
+  h1 {
+    font-size: clamp(2.5rem, 1.6rem + 3.9vw, 5.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 1.4rem + 2.1vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.6rem);
+    line-height: 1.2;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: #1b9dd9;
+    color: #fff;
+  }
+
+  /* Longueur de ligne confortable pour le texte courant */
+  .prose-measure {
+    max-width: 68ch;
   }
 
   /* Anneau de focus visible pour la navigation clavier (WCAG) */
@@ -20,50 +68,132 @@
   button:focus-visible,
   input:focus-visible,
   textarea:focus-visible,
-  select:focus-visible {
-    @apply outline outline-2 outline-offset-2 outline-sun-600;
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-clay-600 rounded-sm;
   }
 }
 
 @layer components {
   .container-jfk {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
   }
 
+  /* ---- Boutons : formes posées, pas de pastilles ---- */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-display font-semibold transition-transform duration-150 focus-visible:scale-[1.02];
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-body text-[0.95rem] font-semibold leading-none;
+    transition: transform 0.25s var(--ease-out-expo), background-color 0.2s ease,
+      box-shadow 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .btn:active {
+    transform: translateY(1px);
   }
 
   .btn-primary {
-    @apply btn bg-sun-500 text-night hover:bg-sun-600 shadow-md hover:shadow-lg;
+    @apply btn bg-clay-600 text-paper-50 shadow-soft;
+  }
+  .btn-primary:hover {
+    @apply bg-clay-700 shadow-lift;
+    transform: translateY(-2px);
   }
 
   .btn-secondary {
-    @apply btn bg-sky-500 text-white hover:bg-sky-600 shadow-md hover:shadow-lg;
+    @apply btn bg-ink-800 text-paper-50 shadow-soft;
+  }
+  .btn-secondary:hover {
+    @apply bg-ink-700 shadow-lift;
+    transform: translateY(-2px);
   }
 
+  /* Contour clair, sur fond sombre / photo */
   .btn-outline {
-    @apply btn border-2 border-white text-white hover:bg-white/10;
+    @apply btn border border-paper-50/40 text-paper-50 backdrop-blur-sm;
+  }
+  .btn-outline:hover {
+    @apply border-paper-50 bg-paper-50/10;
   }
 
+  /* Rempli clair, sur fond coloré / sombre (ex : bandeau terre cuite) */
+  .btn-invert {
+    @apply btn bg-paper-50 text-clay-700 shadow-soft;
+  }
+  .btn-invert:hover {
+    @apply bg-paper-100 shadow-lift;
+    transform: translateY(-2px);
+  }
+
+  /* Contour sombre, sur fond clair */
   .btn-outline-dark {
-    @apply btn border-2 border-night text-night hover:bg-night hover:text-white;
+    @apply btn border border-ink-800/25 text-ink-800;
+  }
+  .btn-outline-dark:hover {
+    @apply border-ink-800 bg-ink-800 text-paper-50;
+    transform: translateY(-2px);
+  }
+
+  /* Lien-action avec flèche */
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 font-body font-semibold text-clay-600;
+    transition: gap 0.25s var(--ease-out-expo), color 0.2s ease;
+  }
+  .link-arrow:hover {
+    @apply gap-2.5 text-clay-700;
   }
 
   .section {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-20 sm:py-24 lg:py-32;
   }
 
   .badge {
-    @apply inline-flex items-center rounded-full bg-leaf-100 px-3 py-1 text-sm font-semibold text-leaf-700;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-moss-100 px-3 py-1 text-sm font-semibold text-moss-700;
   }
 
+  /* ---- Cartes : bord fin, ombre chaude, pas d'anneau dur ---- */
   .card {
-    @apply rounded-xl2 bg-white shadow-md ring-1 ring-black/5;
+    @apply rounded-xl2 bg-paper-50 shadow-soft;
+    border: 1px solid rgba(18, 47, 58, 0.08);
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
+  }
+  .card-hover:hover {
+    @apply shadow-lift;
+    transform: translateY(-4px);
+  }
+
+  /* Filet de séparation chaleureux */
+  .rule {
+    @apply h-px w-full bg-ink-800/10;
   }
 
   /* Lien "passer au contenu" pour l'accessibilité clavier */
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night focus:shadow-lg;
+    @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-paper-50 focus:px-4 focus:py-2 focus:text-ink-800 focus:shadow-lift;
+  }
+}
+
+@layer utilities {
+  /* Révélation au chargement : le défaut est visible, l'animation l'enrichit */
+  .reveal {
+    animation: rise-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .reveal-delay-1 { animation-delay: 0.08s; }
+  .reveal-delay-2 { animation-delay: 0.16s; }
+  .reveal-delay-3 { animation-delay: 0.24s; }
+  .reveal-delay-4 { animation-delay: 0.32s; }
+
+  .text-shadow-soft {
+    text-shadow: 0 1px 20px rgba(12, 32, 40, 0.4);
+  }
+
+  .ease-out-expo {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

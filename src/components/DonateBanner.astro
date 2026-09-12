@@ -11,19 +11,22 @@ const t = useTranslations(lang);
 
 <div
   id="donate-banner"
-  class="fixed inset-x-0 bottom-0 z-40 hidden border-t border-black/5 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur"
+  class="fixed inset-x-0 bottom-0 z-[var(--z-banner)] hidden translate-y-full border-t border-gold-500/30 bg-ink-800/95 px-4 py-3.5 text-paper-50 shadow-[0_-8px_30px_rgba(12,32,40,0.35)] backdrop-blur transition-transform duration-500 ease-out-expo"
   role="complementary"
   aria-label={lang === 'fr' ? 'Bandeau de don' : 'Donation banner'}
 >
   <div class="container-jfk flex items-center justify-between gap-4">
-    <p class="text-sm font-semibold text-night sm:text-base">{t.donateBanner.text}</p>
-    <div class="flex items-center gap-2 shrink-0">
-      <a href={routeUrl('donate', lang)} class="btn-primary !px-4 !py-2 text-sm">{t.donateBanner.cta}</a>
+    <p class="flex items-center gap-2.5 text-sm font-medium sm:text-base">
+      <span class="hidden h-2 w-2 shrink-0 rounded-full bg-gold-400 sm:inline-block"></span>
+      {t.donateBanner.text}
+    </p>
+    <div class="flex shrink-0 items-center gap-2">
+      <a href={routeUrl('donate', lang)} class="btn-primary !px-5 !py-2.5 text-sm">{t.donateBanner.cta}</a>
       <button
         id="donate-banner-close"
         type="button"
         aria-label={lang === 'fr' ? 'Fermer le bandeau' : 'Close banner'}
-        class="rounded-full p-2 text-night/50 hover:bg-night/5 hover:text-night"
+        class="rounded-full p-2 text-paper-100/60 transition-colors hover:bg-paper-100/10 hover:text-paper-50"
       >
         <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
@@ -41,13 +44,17 @@ const t = useTranslations(lang);
   if (banner) {
     const dismissed = sessionStorage.getItem(KEY);
     if (!dismissed) {
-      // Petit délai pour laisser le temps de lire la page avant d'afficher le bandeau
-      window.setTimeout(() => banner.classList.remove('hidden'), 1500);
+      window.setTimeout(() => {
+        banner.classList.remove('hidden');
+        // Laisse le navigateur peindre l'état masqué avant d'animer l'entrée
+        requestAnimationFrame(() => banner.classList.remove('translate-y-full'));
+      }, 1600);
     }
   }
 
   closeBtn?.addEventListener('click', () => {
-    banner?.classList.add('hidden');
+    banner?.classList.add('translate-y-full');
+    window.setTimeout(() => banner?.classList.add('hidden'), 500);
     sessionStorage.setItem(KEY, '1');
   });
 </script>

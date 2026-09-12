@@ -6,14 +6,16 @@ interface Props {
   goalLabel: string;
   raisedLabel: string;
   tone?: 'sun' | 'sky' | 'leaf';
+  /** Sur fond sombre */
+  onDark?: boolean;
 }
-const { goal, raised, currency, goalLabel, raisedLabel, tone = 'sky' } = Astro.props;
+const { goal, raised, currency, goalLabel, raisedLabel, tone = 'sun', onDark = false } = Astro.props;
 const percent = Math.min(100, Math.round((raised / goal) * 100));
 
 const barTone: Record<string, string> = {
-  sun: 'bg-sun-500',
-  sky: 'bg-sky-500',
-  leaf: 'bg-leaf-500',
+  sun: 'bg-clay-500',
+  sky: 'bg-lake-400',
+  leaf: 'bg-moss-400',
 };
 
 function formatAmount(n: number, curr: string) {
@@ -22,16 +24,22 @@ function formatAmount(n: number, curr: string) {
 ---
 
 <div>
-  <div class="mb-2 flex items-end justify-between text-sm">
-    <span class="font-semibold text-night">
-      {raisedLabel} : <span class="text-night">{formatAmount(raised, currency)}</span>
+  <div class="mb-2.5 flex items-end justify-between gap-4 text-sm">
+    <span class:list={['font-semibold', onDark ? 'text-paper-50' : 'text-ink-800']}>
+      {raisedLabel} : {formatAmount(raised, currency)}
     </span>
-    <span class="text-night/60">
+    <span class:list={onDark ? 'text-paper-100/60' : 'text-ink-500'}>
       {goalLabel} : {formatAmount(goal, currency)}
     </span>
   </div>
-  <div class="h-3 w-full overflow-hidden rounded-full bg-night/10" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
-    <div class:list={['h-full rounded-full', barTone[tone]]} style={`width: ${percent}%`}></div>
+  <div
+    class:list={['h-2.5 w-full overflow-hidden rounded-full', onDark ? 'bg-paper-100/15' : 'bg-ink-800/10']}
+    role="progressbar"
+    aria-valuenow={percent}
+    aria-valuemin={0}
+    aria-valuemax={100}
+  >
+    <div class:list={['h-full rounded-full transition-[width] duration-700 ease-out-expo', barTone[tone]]} style={`width: ${percent}%`}></div>
   </div>
-  <p class="mt-1 text-right text-xs font-bold text-night/50">{percent}%</p>
+  <p class:list={['mt-1.5 text-right text-xs font-bold', onDark ? 'text-gold-300' : 'text-clay-600']}>{percent}%</p>
 </div>

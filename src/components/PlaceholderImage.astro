@@ -1,6 +1,6 @@
 ---
 /**
- * Image de remplacement clairement identifiée, en attendant les vraies photos.
+ * Image de remplacement soignée, clairement identifiée, en attendant les vraies photos.
  * À remplacer : dépose les photos réelles dans /public/images/ et utilise <img>
  * à la place de ce composant (voir README > "Modifier les photos").
  */
@@ -9,38 +9,56 @@ interface Props {
   label: string; // nom de la personne ou du projet, pour l'attribut alt
   kind?: 'child' | 'missionary' | 'teacher' | 'project' | 'general';
   class?: string;
+  /** Masque l'étiquette « photo à venir » (ex : petites vignettes rondes) */
+  hideLabel?: boolean;
 }
 
-const { tone = 'sky', label, kind = 'general', class: className = '' } = Astro.props;
+const { tone = 'sun', label, kind = 'general', class: className = '', hideLabel = false } = Astro.props;
 
-const gradients: Record<string, string> = {
-  sun: 'from-sun-200 via-sun-300 to-sun-500',
-  sky: 'from-sky-200 via-sky-300 to-sky-500',
-  leaf: 'from-leaf-200 via-leaf-300 to-leaf-500',
+// tone → base terre (clay / lake / moss via les alias de palette)
+const bases: Record<string, { from: string; to: string; ink: string }> = {
+  sun: { from: '#98D6F0', to: '#12749F', ink: '#0E3346' },
+  sky: { from: '#93D6DA', to: '#15757E', ink: '#0E2D30' },
+  leaf: { from: '#BFDF97', to: '#4A7A28', ink: '#274016' },
 };
+const b = bases[tone];
 
 const icons: Record<string, string> = {
   child: 'M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z',
   missionary: 'M12 2l2.2 4.5L19 7.3l-3.5 3.4.8 4.8L12 13.3 7.7 15.5l.8-4.8L5 7.3l4.8-.8L12 2z',
   teacher: 'M12 3L1 8l11 5 9-4.1V17h2V8L12 3zM5 10.8V14c0 2.2 3.1 4 7 4s7-1.8 7-4v-3.2l-7 3.2-7-3.2z',
   project: 'M4 21V9l8-6 8 6v12h-6v-7H10v7H4z',
-  general: 'M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z',
+  general: 'M4 5h16v10H4zM4 15l5-5 3 3 4-4 4 4v4H4z',
 };
+
+const uid = Math.random().toString(36).slice(2, 8);
 ---
 
 <div
   role="img"
   aria-label={`Photo de ${label} — à remplacer par une photo réelle`}
-  class:list={[
-    'relative flex items-center justify-center overflow-hidden bg-gradient-to-br',
-    gradients[tone],
-    className,
-  ]}
+  class:list={['relative overflow-hidden', className]}
+  style={`background: radial-gradient(120% 120% at 72% 22%, ${b.from} 0%, ${b.to} 78%);`}
 >
-  <svg viewBox="0 0 24 24" fill="currentColor" class="h-1/3 w-1/3 text-white/70">
+  <svg class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 200 200" aria-hidden="true">
+    {/* Courbes topographiques discrètes */}
+    <g fill="none" stroke="#F7F3EC" stroke-opacity="0.14" stroke-width="1">
+      <path d={`M-10 150 C 40 120 90 160 140 132 C 180 110 210 138 220 128`} />
+      <path d={`M-10 172 C 40 142 90 182 140 154 C 180 132 210 160 220 150`} />
+      <path d={`M-10 194 C 40 164 90 204 140 176 C 180 154 210 182 220 172`} />
+      <path d={`M-10 128 C 40 98 90 138 140 110 C 180 88 210 116 220 106`} />
+    </g>
+  </svg>
+
+  {/* Filigrane : icône selon le type */}
+  <svg viewBox="0 0 24 24" class="absolute left-1/2 top-1/2 h-1/3 w-1/3 -translate-x-1/2 -translate-y-1/2 fill-current text-paper-50/45" aria-hidden="true">
     <path d={icons[kind]}></path>
   </svg>
-  <span class="absolute bottom-2 right-2 rounded-md bg-night/60 px-2 py-0.5 font-body text-[10px] font-medium uppercase tracking-wide text-white">
-    Photo à venir
-  </span>
+
+  {!hideLabel && (
+    <span class="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-md bg-ink-900/55 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-paper-50 backdrop-blur-sm">
+      <span class="h-1.5 w-1.5 rounded-full bg-gold-400"></span>
+      Photo à venir
+    </span>
+  )}
 </div>

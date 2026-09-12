@@ -10,18 +10,18 @@ interface Props {
 const { name, role, quote, tone = 'sun' } = Astro.props;
 ---
 
-<figure class="card flex h-full flex-col gap-4 p-6">
-  <svg viewBox="0 0 24 24" class="h-8 w-8 text-sun-400" fill="currentColor" aria-hidden="true">
-    <path d="M7 7c-2.2 0-4 1.8-4 4v6h6v-6H6c0-1.1.9-2 2-2V7zm10 0c-2.2 0-4 1.8-4 4v6h6v-6h-3c0-1.1.9-2 2-2V7z" />
+<figure class="card card-hover flex h-full flex-col gap-5 p-7 sm:p-8">
+  <svg viewBox="0 0 40 32" class="h-8 w-10 text-gold-500" fill="currentColor" aria-hidden="true">
+    <path d="M0 32V18C0 8.5 5.3 2 15 0l2 5C11.6 6.8 9 10 8.7 14H16v18H0zm24 0V18C24 8.5 29.3 2 39 0l1 5c-5.4 1.8-8 5-8.3 9H40v18H24z" />
   </svg>
-  <blockquote class="flex-1 font-display text-lg font-semibold leading-snug text-night">
-    « {quote} »
+  <blockquote class="flex-1 font-display text-[1.35rem] leading-snug text-ink-800">
+    {quote}
   </blockquote>
-  <figcaption class="flex items-center gap-3">
-    <PlaceholderImage tone={tone} label={name} kind="general" class="h-12 w-12 shrink-0 rounded-full" />
+  <figcaption class="flex items-center gap-3.5 border-t border-ink-800/10 pt-5">
+    <PlaceholderImage tone={tone} label={name} kind="general" hideLabel class="h-12 w-12 shrink-0 rounded-full ring-1 ring-ink-800/10" />
     <div>
-      <p class="font-semibold text-night">{name}</p>
-      <p class="text-sm text-night/60">{role}</p>
+      <p class="font-semibold text-ink-800">{name}</p>
+      <p class="text-sm text-ink-500">{role}</p>
     </div>
   </figcaption>
 </figure>

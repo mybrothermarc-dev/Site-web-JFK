@@ -1,6 +1,4 @@
 ---
-import PlaceholderImage from './PlaceholderImage.astro';
-
 interface Cta {
   label: string;
   href: string;
@@ -25,36 +23,116 @@ const {
   subtitle,
   primaryCta,
   secondaryCta,
-  imageLabel,
-  tone = 'sky',
+  tone = 'sun',
   size = 'tall',
 } = Astro.props;
 
-const heightClass = size === 'full' ? 'min-h-[85vh]' : 'min-h-[55vh]';
+const heightClass = size === 'full' ? 'min-h-[92vh]' : 'min-h-[62vh]';
+
+// Légère variation d'ambiance selon la tonalité de la page
+const glow: Record<string, string> = {
+  sun: '#F5B94A',
+  sky: '#7FD0EC',
+  leaf: '#A2CE6E',
+};
 ---
 
-<section class:list={['relative flex items-end overflow-hidden', heightClass]}>
-  <PlaceholderImage tone={tone} label={imageLabel} kind="general" class="absolute inset-0 h-full w-full" />
-  <div class="absolute inset-0 bg-gradient-to-t from-night/85 via-night/40 to-night/10" aria-hidden="true"></div>
+<section class:list={['relative isolate flex items-end overflow-hidden', heightClass]}>
+  {/* Scène « hautes terres » composée — dégradés de terre & terrasses en couches */}
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <svg
+      class="h-full w-full"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMax slice"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#EAF6FC" />
+          <stop offset="0.4" stop-color="#BFE6F6" />
+          <stop offset="0.72" stop-color="#8FD3EC" />
+          <stop offset="1" stop-color="#5FBEE6" />
+        </linearGradient>
+        <radialGradient id="sun" cx="0.72" cy="0.32" r="0.42">
+          <stop offset="0" stop-color={glow[tone]} stop-opacity="0.85" />
+          <stop offset="1" stop-color={glow[tone]} stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#A2CE6E" />
+          <stop offset="1" stop-color="#78B843" />
+        </linearGradient>
+        <linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#78B843" />
+          <stop offset="1" stop-color="#4A7A28" />
+        </linearGradient>
+        <linearGradient id="hill3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#4A7A28" />
+          <stop offset="1" stop-color="#274016" />
+        </linearGradient>
+      </defs>
 
-  <div class="container-jfk relative z-10 pb-16 pt-32 text-white sm:pb-20">
-    {eyebrow && <p class="mb-3 font-display text-sm font-bold uppercase tracking-widest text-sun-300">{eyebrow}</p>}
-    <h1 class="max-w-3xl font-display text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">{title}</h1>
-    {subtitle && <p class="mt-5 max-w-2xl text-lg text-white/90 sm:text-xl">{subtitle}</p>}
+      <rect width="1440" height="900" fill="url(#sky)" />
+      <rect width="1440" height="900" fill="url(#sun)" />
 
-    {(primaryCta || secondaryCta) && (
-      <div class="mt-8 flex flex-wrap gap-4">
-        {primaryCta && (
-          <a href={primaryCta.href} class={primaryCta.style === 'secondary' ? 'btn-secondary' : 'btn-primary'}>
-            {primaryCta.label}
-          </a>
-        )}
-        {secondaryCta && (
-          <a href={secondaryCta.href} class="btn-outline">
-            {secondaryCta.label}
-          </a>
-        )}
-      </div>
-    )}
+      {/* Crête lointaine */}
+      <path
+        d="M0 470 C 220 420 360 452 560 430 C 760 408 900 452 1120 418 C 1280 394 1380 428 1440 414 L1440 900 L0 900 Z"
+        fill="url(#hill1)"
+        opacity="0.55"
+      />
+      {/* Colline médiane */}
+      <path
+        d="M0 560 C 200 520 380 560 620 536 C 880 510 1040 566 1260 540 C 1360 528 1410 552 1440 546 L1440 900 L0 900 Z"
+        fill="url(#hill2)"
+        opacity="0.85"
+      />
+      {/* Coteau avant-plan avec rizières en terrasses */}
+      <path
+        d="M0 680 C 240 640 420 690 700 668 C 980 646 1140 706 1440 672 L1440 900 L0 900 Z"
+        fill="url(#hill3)"
+      />
+      {/* Lignes de terrasses (rizières) sur le coteau */}
+      <g stroke="#F7F3EC" stroke-opacity="0.10" stroke-width="1.5" fill="none">
+        <path d="M0 720 C 260 686 460 728 760 708 C 1040 690 1200 736 1440 708" />
+        <path d="M0 762 C 260 730 460 770 760 752 C 1040 736 1200 778 1440 752" />
+        <path d="M0 806 C 260 776 460 814 760 798 C 1040 784 1200 820 1440 798" />
+      </g>
+    </svg>
+  </div>
+
+  {/* Voile sombre bas → haut pour la lisibilité du texte */}
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-900/90 via-ink-900/45 to-ink-900/5"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-jfk relative z-10 pb-16 pt-40 text-paper-50 sm:pb-24">
+    <div class="max-w-3xl">
+      <h1 class="reveal max-w-3xl text-shadow-soft">{title}</h1>
+      {subtitle && (
+        <p class="reveal reveal-delay-1 mt-6 max-w-2xl text-lg leading-relaxed text-paper-100/95 text-shadow-soft sm:text-xl">
+          {subtitle}
+        </p>
+      )}
+
+      {(primaryCta || secondaryCta) && (
+        <div class="reveal reveal-delay-2 mt-9 flex flex-wrap gap-4">
+          {primaryCta && (
+            <a href={primaryCta.href} class="btn-primary">
+              {primaryCta.label}
+              <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m0 0l-4-4m4 4l-4 4" />
+              </svg>
+            </a>
+          )}
+          {secondaryCta && (
+            <a href={secondaryCta.href} class="btn-outline">
+              {secondaryCta.label}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
   </div>
 </section>

@@ -33,7 +33,8 @@ const {
       <span
         class:list={[
           'absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold shadow',
-          statusVariant === 'sponsored' ? 'bg-leaf-500 text-white' : 'bg-sun-500 text-night',
+          // Texte sombre sur les deux fonds : le blanc sur vert-500 échoue au contraste WCAG AA (2.4:1)
+          statusVariant === 'sponsored' ? 'bg-leaf-500 text-night' : 'bg-sun-500 text-night',
         ]}
       >
         {statusLabel}

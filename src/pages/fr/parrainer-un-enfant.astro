@@ -61,14 +61,14 @@ const children = (await getCollection('children')).sort((a, b) => a.data.order -
             <h3 class="font-display text-xl font-bold text-night">{tier.titleFr}</h3>
             <p class="font-display text-3xl font-extrabold text-sky-600">
               {tier.amount}&nbsp;{tier.currency === 'EUR' ? '€' : tier.currency}
-              <span class="text-base font-medium text-night/50">{t.common.perMonth}</span>
+              <span class="text-base font-medium text-night/70">{t.common.perMonth}</span>
             </p>
             <p class="flex-1 text-sm leading-relaxed text-night/70">{tier.descriptionFr}</p>
             <a href="#formulaire" class="btn-primary w-full">{t.common.sponsorNow}</a>
           </div>
         ))}
       </div>
-      <p class="mx-auto mt-6 max-w-2xl text-center text-xs text-night/50">
+      <p class="mx-auto mt-6 max-w-2xl text-center text-xs text-night/70">
         Montants indicatifs en euros, modifiables à tout moment par JFK (voir README).
       </p>
     </div>
