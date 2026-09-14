@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import ProgressBar from '../../components/ProgressBar.astro';
-import PlaceholderImage from '../../components/PlaceholderImage.astro';
+import SmartImage from '../../components/SmartImage.astro';
 import { projects2026Content } from '../../data/pages/projects2026';
 import { routeUrl } from '../../i18n/routes';
 import { getCollection } from 'astro:content';
@@ -20,7 +20,11 @@ const donateLink = `${routeUrl('donate', lang)}?fleche=projets-2026`;
     <div class="container-jfk space-y-14">
       {projects.map((project, i) => (
         <div class:list={['grid gap-8 lg:grid-cols-2 lg:items-center', i % 2 === 1 && 'lg:[&>*:first-child]:order-2']}>
-          <PlaceholderImage
+          <SmartImage
+            src={project.data.photo}
+            alt={project.data.title.fr}
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
             tone={project.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
             label={project.data.title.fr}
             kind="project"

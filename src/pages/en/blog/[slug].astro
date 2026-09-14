@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/Hero.astro';
+import ArticleBody from '../../../components/ArticleBody.astro';
+import { getCollection, render } from 'astro:content';
+import { routeUrl } from '../../../i18n/routes';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.published);
+  return posts.map((post) => ({ params: { slug: post.id } }));
+}
+
+const lang = 'en' as const;
+const { slug } = Astro.params;
+
+const post = (await getCollection('blog')).find((entry) => entry.id === slug);
+if (!post) return Astro.redirect(routeUrl('blog', lang));
+
+const { Content } = await render(post);
+const hasFrench =
+  Boolean(post.data.titleFr) && (await getCollection('blogFr')).some((entry) => entry.id === post.id);
+
+const formattedDate = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' }).format(post.data.date);
+---
+
+<BaseLayout
+  lang={lang}
+  currentRoute="blog"
+  title={post.data.title}
+  description={post.data.excerpt}
+  alternates={{ en: `/en/blog/${post.id}`, fr: hasFrench ? `/fr/blog/${post.id}` : undefined }}
+>
+  <Hero title={post.data.title} subtitle={post.data.excerpt} imageLabel={post.data.title} image={post.data.cover} tone="leaf" />
+
+  <article class="section bg-paper">
+    <div class="container-jfk">
+      <div class="mx-auto mb-10 flex max-w-prose flex-wrap items-center justify-between gap-4 border-b border-ink-800/10 pb-6">
+        <a href={routeUrl('blog', lang)} class="link-arrow text-sm">
+          <svg viewBox="0 0 20 20" class="h-4 w-4 rotate-180" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m0 0l-4-4m4 4l-4 4" />
+          </svg>
+          All news
+        </a>
+        <time datetime={post.data.date.toISOString()} class="text-sm font-medium text-ink-500">{formattedDate}</time>
+      </div>
+
+      <ArticleBody>
+        <Content />
+      </ArticleBody>
+
+      <div class="mx-auto mt-16 flex max-w-prose flex-col items-start gap-4 border-t border-ink-800/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
+        <p class="font-display text-xl text-ink-800">Want to be part of the next story?</p>
+        <a href={routeUrl('donate', lang)} class="btn-primary">Support the mission</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

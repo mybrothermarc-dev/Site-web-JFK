@@ -24,3 +24,6 @@ Thumbs.db
 
 # Logs
 npm-debug.log*
+
+# Journal du bouton Publier
+build.log

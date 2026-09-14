@@ -1,13 +1,24 @@
 ---
+import { getCollection } from 'astro:content';
 import { routeUrl, otherLang, type RouteKey, type Lang } from '../i18n/routes';
 import { useTranslations } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
   currentRoute: RouteKey;
+  /** Adresse exacte de cette page dans l'autre langue, quand elle diffère de la carte des pages */
+  otherLangHref?: string;
 }
-const { lang, currentRoute } = Astro.props;
+const { lang, currentRoute, otherLangHref } = Astro.props;
 const t = useTranslations(lang);
+
+// L'onglet Blog n'apparaît que s'il existe au moins un article publié dans cette langue
+const frenchBodies = lang === 'fr' ? new Set((await getCollection('blogFr')).map((entry) => entry.id)) : null;
+const publishedPosts = await getCollection(
+  'blog',
+  ({ id, data }) => data.published && (!frenchBodies || (Boolean(data.titleFr) && frenchBodies.has(id)))
+);
+const showBlog = publishedPosts.length > 0 || currentRoute === 'blog';
 
 const navItems: { key: RouteKey; label: string }[] = [
   { key: 'home', label: t.nav.home },
@@ -16,11 +27,12 @@ const navItems: { key: RouteKey; label: string }[] = [
   { key: 'supportMissionaries', label: t.nav.supportMissionaries },
   { key: 'supportTeachers', label: t.nav.supportTeachers },
   { key: 'projects2026', label: t.nav.projects2026 },
+  ...(showBlog ? [{ key: 'blog' as const, label: t.nav.blog }] : []),
   { key: 'contact', label: t.nav.contact },
 ];
 
 const otherLangCode = otherLang(lang);
-const otherLangUrl = routeUrl(currentRoute, otherLangCode);
+const otherLangUrl = otherLangHref ?? routeUrl(currentRoute, otherLangCode);
 ---
 
 <header

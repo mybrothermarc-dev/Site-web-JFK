@@ -1,0 +1,15 @@
+{
+  "name": "Un chef de village",
+  "role": {
+    "en": "Village that welcomed a new satellite school",
+    "fr": "Village ayant accueilli une nouvelle école annexe"
+  },
+  "quote": {
+    "en": "Since the school opened, our children no longer need to walk for hours to learn. The whole village’s hope has changed.",
+    "fr": "Depuis que l’école a ouvert, nos enfants n’ont plus besoin de marcher des heures pour apprendre. Le village entier a changé d’espérance."
+  },
+  "photo": null,
+  "showOnTeachersPage": true,
+  "photoPlaceholder": "leaf",
+  "order": 3
+}

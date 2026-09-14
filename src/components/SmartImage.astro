@@ -1,0 +1,55 @@
+---
+/**
+ * Affiche la vraie photo quand elle existe (optimisée automatiquement),
+ * sinon l'image provisoire « Photo à venir ».
+ */
+import { Image } from 'astro:assets';
+import PlaceholderImage from './PlaceholderImage.astro';
+import { resolveImage } from '../lib/images';
+
+interface Props {
+  src?: string | null;
+  alt: string;
+  /** Nom utilisé par l'image provisoire */
+  label: string;
+  tone?: 'sun' | 'sky' | 'leaf';
+  kind?: 'child' | 'missionary' | 'teacher' | 'project' | 'general';
+  class?: string;
+  hideLabel?: boolean;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  src,
+  alt,
+  label,
+  tone,
+  kind,
+  class: className,
+  hideLabel,
+  widths = [400, 800, 1200],
+  sizes = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+  loading = 'lazy',
+} = Astro.props;
+
+const image = resolveImage(src);
+const usableWidths = image ? widths.filter((w) => w <= image.width) : [];
+if (image && usableWidths.length === 0) usableWidths.push(image.width);
+---
+
+{
+  image ? (
+    <Image
+      src={image}
+      alt={alt}
+      widths={usableWidths}
+      sizes={sizes}
+      loading={loading}
+      class:list={['object-cover', className]}
+    />
+  ) : (
+    <PlaceholderImage tone={tone} label={label} kind={kind} class={className} hideLabel={hideLabel} />
+  )
+}

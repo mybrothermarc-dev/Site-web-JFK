@@ -8,8 +8,8 @@ Site vitrine et de levée de fonds pour Jesus Family Kingdom, œuvre chrétienne
 2. [Lancer le site en local](#2-lancer-le-site-en-local)
 3. [Déployer sur GitHub + Cloudflare Pages](#3-déployer-sur-github--cloudflare-pages)
 4. [Brancher le domaine jesus-family-kingdom.com](#4-brancher-le-domaine-jesus-family-kingdomcom)
-5. [Modifier les textes, profils, montants et jauges](#5-modifier-les-textes-profils-montants-et-jauges)
-6. [Remplacer les photos](#6-remplacer-les-photos)
+5. [Modifier le contenu avec l'admin](#5-modifier-le-contenu-avec-ladmin)
+6. [Écrire un article de blog](#6-écrire-un-article-de-blog)
 7. [Configurer les formulaires (Web3Forms)](#7-configurer-les-formulaires-web3forms)
 8. [⚠️ À compléter par JFK avant la mise en ligne définitive](#8--à-compléter-par-jfk-avant-la-mise-en-ligne-définitive)
 
@@ -19,7 +19,8 @@ Site vitrine et de levée de fonds pour Jesus Family Kingdom, œuvre chrétienne
 
 - **[Astro](https://astro.build)** en sortie 100% statique (`output: 'static'`) : ultra-rapide, aucun serveur nécessaire, parfaitement compatible avec le plan gratuit de Cloudflare Pages.
 - **Tailwind CSS** pour le style (palette bleu ciel / vert feuille / orange soleil inspirée du logo JFK).
-- **i18n natif Astro** : français par défaut, anglais en second, URLs localisées (`/fr/...` et `/en/...`).
+- **i18n natif Astro** : **anglais en langue principale**, français en second, URLs localisées (`/en/...` et `/fr/...`). L'adresse `/` redirige vers `/en/`.
+- **Keystatic** : interface d'administration locale pour modifier les fiches, les photos, les montants et le blog sans toucher au code (voir section 5).
 - **Astro Content Collections** (fichiers JSON) pour les profils d'enfants, de missionnaires, d'enseignants, les projets 2026 et les témoignages — modifiables sans toucher au code.
 - **Web3Forms** (gratuit, sans serveur) pour tous les formulaires (contact, parrainage, prière).
 - **Sitemap automatique** (`@astrojs/sitemap`) et données structurées `schema.org/NGO`.
@@ -81,75 +82,88 @@ git push -u origin main
 4. Si le domaine est enregistré ailleurs : soit tu transfères la gestion DNS vers Cloudflare (recommandé, gratuit), soit tu ajoutes manuellement chez ton registrar l'enregistrement CNAME fourni par Cloudflare Pages pointant vers `jfk-site.pages.dev`.
 5. Pense à créer une redirection de `jesus-family-kingdom.com` vers `www.jesus-family-kingdom.com` (ou l'inverse) dans **Rules → Redirect Rules** pour éviter le contenu dupliqué.
 
-## 5. Modifier les textes, profils, montants et jauges
+## 5. Modifier le contenu avec l'admin
 
-Tout le contenu éditable vit dans deux dossiers, **sans jamais toucher aux fichiers de `src/components/` ou `src/layouts/`** :
+Le site a une interface d'administration qui tourne **uniquement sur ton ordinateur**. Rien de l'admin n'est publié en ligne.
 
-### `src/content/` — fiches individuelles (JSON)
+### Ouvrir l'admin
 
-| Dossier | Contenu | Champs à modifier |
-|---|---|---|
-| `src/content/children/` | Profils d'enfants à parrainer | `firstName`, `age`, `status` (`available` ou `sponsored`), `bio.fr` / `bio.en` |
-| `src/content/missionaries/` | Profils de missionnaires | `firstName`, `zone`, `summary`, `stats` |
-| `src/content/teachers/` | Profils d'enseignants missionnaires | `firstName`, `village`, `summary` |
-| `src/content/projects2026/` | Les 3 grands projets 2026 | `title`, `description`, `budgetGoal`, `budgetRaised` (la jauge se recalcule automatiquement) |
-| `src/content/villageSchools/` | Projets de financement d'écoles de village | `villageName`, `budgetGoal`, `budgetRaised` |
-| `src/content/testimonials/` | Témoignages courts | `name`, `role`, `quote` |
+1. Double-clique sur **`Ouvrir-Admin-JFK.bat`**, à la racine du dossier du site.
+2. Une fenêtre noire s'ouvre : **laisse-la ouverte** pendant que tu travailles. Ton navigateur s'ouvre tout seul sur l'admin (`http://127.0.0.1:4321/keystatic`).
+3. Pour voir le site pendant que tu travailles : `http://127.0.0.1:4321/en/`.
+4. Pour arrêter l'admin : ferme la fenêtre noire.
 
-Pour **ajouter** un nouvel enfant, un nouveau missionnaire, etc. : duplique un fichier JSON existant du même dossier, renomme-le, et modifie ses valeurs. Il apparaîtra automatiquement sur le site au prochain déploiement.
+Les boutons de l'admin sont en anglais : **Add** = ajouter, **Save** = enregistrer, **Choose file** = choisir un fichier, **Remove** = retirer. Chaque champ est expliqué en français.
 
-Pour **retirer** un profil (ex : un enfant qui a trouvé un parrain et ne doit plus apparaître) : passe simplement `"status": "sponsored"` (il reste visible mais non parrainable), ou supprime le fichier JSON pour qu'il disparaisse complètement.
+### Ce que tu peux modifier
 
-### `src/data/site.ts` — réglages globaux du site
+| Menu de l'admin | Ce qu'il contient |
+|---|---|
+| Contenu › Blog | Les articles (voir section 6) |
+| Contenu › Enfants à parrainer | Fiches, photos, statut « en attente » / « parrainé » |
+| Contenu › Missionnaires, Enseignants missionnaires, Témoignages | Fiches et photos |
+| Projets › Projets 2026, Écoles de village à financer | Textes, objectif, montant déjà réuni (les jauges se recalculent seules) |
+| Réglages du site › Chiffres d'impact | Les compteurs de la page d'accueil |
+| Réglages du site › Photos des pages | La grande image du haut de chaque page, le portrait du président |
+| Réglages du site › Coordonnées et réseaux | Adresse, téléphones, email, Facebook, Instagram, clé Web3Forms, rapport annuel (PDF) |
+| Réglages du site › Moyens de paiement | Liens Stripe et PayPal, virement bancaire, Mobile Money |
+| Réglages du site › Montants et répartition des dons | Formules de parrainage, soutien missionnaire et enseignant, répartition des dons |
 
-Ce fichier centralise :
-- les coordonnées de contact et réseaux sociaux,
-- **les montants de parrainage** (`sponsorshipTiers`),
-- **le montant de soutien mensuel** d'un missionnaire et d'un enseignant (`missionarySupport`, `teacherSupport`),
-- les moyens de paiement (Stripe, PayPal, virement, Mobile Money),
-- la répartition des fonds affichée sur la page Don (`fundsAllocation`),
-- les chiffres d'impact 2025 (`impactStats2025`) — à mettre à jour chaque année.
+**Photos :** pas besoin de les réduire avant de les ajouter, le site les redimensionne et les convertit automatiquement. La liste des 32 photos attendues est dans `IMAGES-A-FOURNIR.md` (et sa version Word `IMAGES-A-FOURNIR.docx`).
 
-### `src/data/pages/*.ts` — textes longs de chaque page
+**Protection de l'enfance :** la photo d'un enfant ne s'affiche sur le site que si la case « J'ai l'accord écrit du tuteur légal » est cochée dans sa fiche.
 
-Chaque page a son fichier de contenu bilingue (ex. `src/data/pages/home.ts` pour l'accueil, `sponsor-child.ts` pour le parrainage, etc.). Chaque texte existe en deux versions, `fr` et `en` : modifie l'une, pense à adapter l'autre.
+### Publier tes modifications
 
-## 6. Remplacer les photos
+1. Clique sur **Save** dans l'admin.
+2. Double-clique sur **`Publier-Site-JFK.bat`**. Il vérifie que le site se construit, enregistre tes modifications et les envoie sur GitHub.
+3. Cloudflare met le site en ligne à jour en 2 minutes environ.
 
-Actuellement, toutes les photos (enfants, missionnaires, enseignants, hero, projets) sont des **placeholders visuels générés** (dégradés de couleur + icône + mention « Photo à venir »), produits par le composant `src/components/PlaceholderImage.astro`. **Aucune photo de banque d'images générique n'a été utilisée**, comme demandé.
+Si la vérification échoue, **rien n'est publié** : le fichier `build.log` créé dans le dossier contient l'explication, à envoyer à Claude.
 
-Pour remplacer un placeholder par une vraie photo :
+### Pas encore dans l'admin
 
-1. Dépose l'image dans `public/images/` (formats recommandés : `.jpg` ou `.webp`, compressée, moins de 300 Ko par image pour rester performant et respecter les limites du plan gratuit Cloudflare Pages).
-2. Dans le fichier `.astro` de la page concernée (ou dans le composant `ProfileCard.astro` si tu veux généraliser à toutes les fiches), remplace la balise `<PlaceholderImage ... />` par une balise `<img src="/images/ton-fichier.jpg" alt="Description" class="..." />` en conservant les mêmes classes CSS pour garder la mise en page.
-3. Pense à toujours renseigner un attribut `alt` descriptif pour l'accessibilité — et à respecter la [politique de protection de l'enfance](#8--à-compléter-par-jfk-avant-la-mise-en-ligne-définitive) (consentement, pas de localisation identifiable).
+Les longs textes des pages (histoire de JFK, piliers, FAQ du parrainage…) sont dans `src/data/pages/*.ts`. Pour l'instant, ils se modifient dans le code, ou en le demandant à Claude.
+
+### Où sont rangées les données (pour un développeur)
+
+- Fiches : `src/content/<collection>/*.json` · articles : `src/content/blog/<adresse>/index.md` (+ `contentFr.md` pour le français)
+- Réglages : `src/data/settings/*.json`, remis dans leur forme habituelle par `src/data/site.ts`
+- Photos : `src/assets/images/**`, optimisées au build via `src/lib/images.ts` et `src/components/SmartImage.astro`
+- Configuration de l'admin : `keystatic.config.ts`. L'admin est lancé par `npm run admin` (variable `JFK_ADMIN=1`). Le build de production ne le charge jamais.
+- `@keystatic/astro` est volontairement bloqué en version **5.2.0** : la 6.x est incompatible avec Astro 5.
+
+## 6. Écrire un article de blog
+
+1. Dans l'admin : **Contenu › Blog › Add**.
+2. Remplis le **titre**, le **résumé** et l'**article en anglais**. Ajoute une photo de couverture si tu en as une.
+3. Facultatif : remplis le titre, le résumé et l'article **en français**. Sans version française, l'article n'apparaît que sur le site anglais.
+4. **Save**, puis double-clique sur `Publier-Site-JFK.bat`.
+
+L'onglet **Blog** apparaît dans le menu du site dès le premier article publié. Pour garder un article en brouillon, décoche **Publié**. La barre d'outils de l'éditeur permet d'ajouter des titres, du gras, des listes, des liens et des images.
 
 ## 7. Configurer les formulaires (Web3Forms)
 
-Tous les formulaires du site (contact, demande de parrainage, engagement de prière) utilisent [Web3Forms](https://web3forms.com), un service **gratuit** qui envoie les soumissions par email sans nécessiter de serveur.
+Tous les formulaires du site (contact, demande de parrainage, engagement de prière) utilisent [Web3Forms](https://web3forms.com), un service **gratuit** qui envoie les messages par email, sans serveur.
 
-1. Va sur [web3forms.com](https://web3forms.com) et crée une clé d'accès gratuite avec ton adresse email (aucune inscription complexe requise).
-2. Copie la clé fournie.
-3. Ouvre `src/data/site.ts` et remplace :
-   ```ts
-   export const web3FormsAccessKey = 'WEB3FORMS_ACCESS_KEY_A_REMPLACER';
-   ```
-   par ta propre clé.
-4. Redéploie le site (`git push`) : tous les formulaires du site enverront désormais réellement leurs messages à l'adresse email associée à ta clé Web3Forms.
+1. Va sur [web3forms.com](https://web3forms.com) et crée une clé d'accès gratuite avec ton adresse email.
+2. Copie la clé reçue.
+3. Dans l'admin : **Réglages du site › Coordonnées et réseaux › Clé Web3Forms**. Colle la clé, puis **Save**.
+4. Double-clique sur `Publier-Site-JFK.bat`.
 
-Chaque formulaire envoie un email avec un objet différent (ex. « Nouvelle demande de parrainage d'enfant ») pour t'aider à trier les demandes.
+Chaque formulaire envoie un email avec un objet différent (ex. « New child sponsorship request ») pour t'aider à trier les demandes.
 
 ## 8. ⚠️ À compléter par JFK avant la mise en ligne définitive
 
 Le site est **entièrement fonctionnel et déployable tel quel**, mais les éléments suivants sont des placeholders explicites à remplacer avant de communiquer officiellement l'adresse du site :
 
-### Paiements (`src/data/site.ts`)
+### Paiements (admin › Réglages du site › Moyens de paiement)
 - [ ] `paymentInfo.stripe.oneTimeLink` et `monthlyLink` — remplacer par tes vrais liens Stripe Payment Links (dons ponctuel et mensuel).
 - [ ] `paymentInfo.paypal.link` — remplacer par ton lien PayPal.me ou bouton PayPal réel.
 - [ ] `paymentInfo.bankTransfer` — RIB complet (titulaire, IBAN, BIC, nom de la banque).
 - [ ] `paymentInfo.mobileMoney` — numéros Mvola et Orange Money réels.
 
-### Montants à valider (`src/data/site.ts`)
+### Montants à valider (admin › Réglages du site › Montants et répartition des dons)
 - [ ] `sponsorshipTiers` — montants de parrainage (15 € / 30 € / 50 € par mois) : **à valider par JFK**, ce sont des valeurs indicatives réalistes proposées par défaut.
 - [ ] `missionarySupport.monthlyAmount` (40 €/mois) et `emergencyCaseCost` (350 $) — **à valider**.
 - [ ] `teacherSupport.monthlyAmount` (35 €/mois) et `schoolProjectMin`/`schoolProjectMax` (3000–4000 $) — **à valider**.
@@ -163,7 +177,7 @@ Le site est **entièrement fonctionnel et déployable tel quel**, mais les élé
 - [ ] Mentions légales (`src/data/pages/legal.ts`) — préciser le statut juridique exact de l'association/fondation à Madagascar.
 
 ### Photos
-- [ ] Toutes les photos du site sont des placeholders visuels génériques (voir section 6) — à remplacer par les vraies photos des enfants, missionnaires, enseignants et lieux, **avec consentement pour les enfants**.
+- [ ] Toutes les photos du site sont des placeholders visuels génériques (voir `IMAGES-A-FOURNIR.md`) — à remplacer par les vraies photos des enfants, missionnaires, enseignants et lieux, **avec consentement pour les enfants**.
 - [ ] `public/images/og-default.jpg` — image de partage réseaux sociaux générée automatiquement (dégradé + logo) ; tu peux la remplacer par une vraie photo si tu préfères (dimensions recommandées : 1200×630 px).
 
 ### Enseignants missionnaires

@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/Hero.astro';
+import ArticleBody from '../../../components/ArticleBody.astro';
+import { getCollection, render } from 'astro:content';
+import { routeUrl } from '../../../i18n/routes';
+
+export async function getStaticPaths() {
+  const frenchBodies = new Set((await getCollection('blogFr')).map((entry) => entry.id));
+  const posts = await getCollection(
+    'blog',
+    ({ id, data }) => data.published && Boolean(data.titleFr) && frenchBodies.has(id)
+  );
+  return posts.map((post) => ({ params: { slug: post.id } }));
+}
+
+const lang = 'fr' as const;
+const { slug } = Astro.params;
+
+const post = (await getCollection('blog')).find((entry) => entry.id === slug);
+const frenchBody = (await getCollection('blogFr')).find((entry) => entry.id === slug);
+if (!post || !frenchBody || !post.data.titleFr) return Astro.redirect(routeUrl('blog', lang));
+
+const { Content } = await render(frenchBody);
+const excerpt = post.data.excerptFr || post.data.excerpt;
+const formattedDate = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(post.data.date);
+---
+
+<BaseLayout
+  lang={lang}
+  currentRoute="blog"
+  title={post.data.titleFr}
+  description={excerpt}
+  alternates={{ en: `/en/blog/${post.id}`, fr: `/fr/blog/${post.id}` }}
+>
+  <Hero title={post.data.titleFr} subtitle={excerpt} imageLabel={post.data.titleFr} image={post.data.cover} tone="leaf" />
+
+  <article class="section bg-paper">
+    <div class="container-jfk">
+      <div class="mx-auto mb-10 flex max-w-prose flex-wrap items-center justify-between gap-4 border-b border-ink-800/10 pb-6">
+        <a href={routeUrl('blog', lang)} class="link-arrow text-sm">
+          <svg viewBox="0 0 20 20" class="h-4 w-4 rotate-180" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m0 0l-4-4m4 4l-4 4" />
+          </svg>
+          Toutes les nouvelles
+        </a>
+        <time datetime={post.data.date.toISOString()} class="text-sm font-medium text-ink-500">{formattedDate}</time>
+      </div>
+
+      <ArticleBody>
+        <Content />
+      </ArticleBody>
+
+      <div class="mx-auto mt-16 flex max-w-prose flex-col items-start gap-4 border-t border-ink-800/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
+        <p class="font-display text-xl text-ink-800">Envie de faire partie du prochain récit ?</p>
+        <a href={routeUrl('donate', lang)} class="btn-primary">Soutenir la mission</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

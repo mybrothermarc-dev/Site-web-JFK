@@ -1,0 +1,51 @@
+{
+  "sponsorshipTiers": [
+    {
+      "amount": 15,
+      "currency": "EUR",
+      "titleEn": "Education",
+      "titleFr": "Scolarité",
+      "descriptionEn": "Covers the child’s school fees, supplies and uniform.",
+      "descriptionFr": "Couvre les frais de scolarité, les fournitures et l’uniforme de l’enfant.",
+      "highlighted": false
+    },
+    {
+      "amount": 30,
+      "currency": "EUR",
+      "titleEn": "Education + meals",
+      "titleFr": "Scolarité + repas",
+      "descriptionEn": "Adds daily balanced meals on top of schooling.",
+      "descriptionFr": "Ajoute une alimentation quotidienne équilibrée à la scolarisation.",
+      "highlighted": true
+    },
+    {
+      "amount": 50,
+      "currency": "EUR",
+      "titleEn": "Full care",
+      "titleFr": "Prise en charge complète",
+      "descriptionEn": "Housing, food, schooling, medical follow-up and spiritual mentoring.",
+      "descriptionFr": "Hébergement, nourriture, scolarité, suivi médical et accompagnement spirituel.",
+      "highlighted": false
+    }
+  ],
+  "missionary": {
+    "monthlyAmount": 40,
+    "currency": "EUR",
+    "emergencyCaseCost": 350,
+    "emergencyCurrency": "USD"
+  },
+  "teacher": {
+    "monthlyAmount": 35,
+    "currency": "EUR",
+    "schoolProjectMin": 3000,
+    "schoolProjectMax": 4000,
+    "schoolProjectCurrency": "USD"
+  },
+  "fundsAllocation": [
+    { "labelEn": "Missions (evangelism, training, church planting)", "labelFr": "Missions (évangélisation, formation, implantation d’églises)", "percent": 35 },
+    { "labelEn": "Education (schools, teachers, supplies)", "labelFr": "Éducation (écoles, enseignants, fournitures)", "percent": 25 },
+    { "labelEn": "Paradisakely orphanage (housing, food, care)", "labelFr": "Orphelinat Paradisakely (hébergement, nourriture, soins)", "percent": 25 },
+    { "labelEn": "Medical mission (care, evacuations, equipment)", "labelFr": "Mission médicale (soins, évacuations, matériel)", "percent": 10 },
+    { "labelEn": "Operations and administration", "labelFr": "Fonctionnement et administration", "percent": 5 }
+  ]
+}

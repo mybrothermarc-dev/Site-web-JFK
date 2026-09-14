@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/Hero.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const lang = 'en' as const;
+
+const posts = (await getCollection('blog', ({ data }) => data.published)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<BaseLayout
+  lang={lang}
+  currentRoute="blog"
+  title="News from the field"
+  description="Stories, updates and answered prayers from the Madagascar villages served by Jesus Family Kingdom."
+>
+  <Hero
+    title="News from the field"
+    subtitle="Stories, updates and answered prayers from the villages Jesus Family Kingdom serves across Madagascar."
+    imageLabel="Jesus Family Kingdom news"
+    tone="leaf"
+  />
+
+  <section class="section bg-paper">
+    <div class="container-jfk">
+      {
+        posts.length > 0 ? (
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <BlogCard
+                href={`/en/blog/${post.id}`}
+                title={post.data.title}
+                excerpt={post.data.excerpt}
+                date={post.data.date}
+                cover={post.data.cover}
+                coverAlt={post.data.coverAlt}
+                lang={lang}
+              />
+            ))}
+          </div>
+        ) : (
+          <p class="mx-auto max-w-xl text-center text-lg text-ink-600">
+            No articles yet. The first stories from the field are coming soon.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

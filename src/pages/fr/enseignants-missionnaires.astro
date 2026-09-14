@@ -17,7 +17,7 @@ const t = useTranslations(lang);
 
 const teachers = (await getCollection('teachers')).sort((a, b) => a.data.order - b.data.order);
 const schools = (await getCollection('villageSchools')).sort((a, b) => a.data.order - b.data.order);
-const villageTestimonial = (await getCollection('testimonials')).find((item) => item.id === 'enseignant-village');
+const villageTestimonial = (await getCollection('testimonials')).find((item) => item.data.showOnTeachersPage);
 const donateLink = `${routeUrl('donate', lang)}?fleche=enseignants`;
 ---
 
@@ -50,6 +50,7 @@ const donateLink = `${routeUrl('donate', lang)}?fleche=enseignants`;
             subtitle={teacher.data.village}
             description={teacher.data.summary.fr}
             tone={teacher.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            photo={teacher.data.photo}
             kind="teacher"
             ctaLabel={t.common.supportTeacher}
             ctaHref={donateLink}
@@ -113,6 +114,7 @@ const donateLink = `${routeUrl('donate', lang)}?fleche=enseignants`;
           role={villageTestimonial.data.role.fr}
           quote={villageTestimonial.data.quote.fr}
           tone={villageTestimonial.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+          photo={villageTestimonial.data.photo}
         />
       </div>
     </section>

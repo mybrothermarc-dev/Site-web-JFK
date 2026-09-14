@@ -1,4 +1,9 @@
 ---
+import { Image } from 'astro:assets';
+import { pageImages } from '../data/site';
+import { resolveImage } from '../lib/images';
+import { routeKeyFromPath } from '../i18n/routes';
+
 interface Cta {
   label: string;
   href: string;
@@ -12,6 +17,8 @@ interface Props {
   primaryCta?: Cta;
   secondaryCta?: Cta;
   imageLabel: string;
+  /** Photo propre à cette page (ex : couverture d'un article). Sinon : la photo réglée dans l'admin. */
+  image?: string | null;
   tone?: 'sun' | 'sky' | 'leaf';
   /** Hauteur : "full" pour le hero d'accueil, "tall" pour les autres pages */
   size?: 'full' | 'tall';
@@ -25,9 +32,17 @@ const {
   secondaryCta,
   tone = 'sun',
   size = 'tall',
+  image,
 } = Astro.props;
 
 const heightClass = size === 'full' ? 'min-h-[92vh]' : 'min-h-[62vh]';
+
+// Photo de fond : celle de la page si fournie, sinon celle choisie dans l'admin (« Photos des pages »).
+// Sans photo, la scène illustrée des hautes terres reste affichée.
+const routeKey = routeKeyFromPath(Astro.url.pathname);
+const heroImage = resolveImage(image ?? (routeKey ? pageImages[routeKey] : null));
+const heroWidths = heroImage ? [640, 960, 1280, 1920].filter((w) => w <= heroImage.width) : [];
+if (heroImage && heroWidths.length === 0) heroWidths.push(heroImage.width);
 
 // Légère variation d'ambiance selon la tonalité de la page
 const glow: Record<string, string> = {
@@ -99,6 +114,18 @@ const glow: Record<string, string> = {
       </g>
     </svg>
   </div>
+
+  {heroImage && (
+    <Image
+      src={heroImage}
+      alt=""
+      widths={heroWidths}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 -z-10 h-full w-full object-cover"
+    />
+  )}
 
   {/* Voile sombre bas → haut pour la lisibilité du texte */}
   <div

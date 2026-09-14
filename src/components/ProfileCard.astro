@@ -1,10 +1,12 @@
 ---
-import PlaceholderImage from './PlaceholderImage.astro';
+import SmartImage from './SmartImage.astro';
 
 interface Props {
   name: string;
   subtitle: string;
   description: string;
+  /** Photo choisie dans l'admin ; sans photo, une image provisoire s'affiche */
+  photo?: string | null;
   tone?: 'sun' | 'sky' | 'leaf';
   kind?: 'child' | 'missionary' | 'teacher';
   statusLabel?: string;
@@ -17,6 +19,7 @@ const {
   name,
   subtitle,
   description,
+  photo,
   tone = 'sky',
   kind = 'child',
   statusLabel,
@@ -28,7 +31,7 @@ const {
 
 <article class="card flex h-full flex-col overflow-hidden">
   <div class="relative">
-    <PlaceholderImage tone={tone} label={name} kind={kind} class="aspect-[4/3] w-full" />
+    <SmartImage src={photo} alt={name} label={name} tone={tone} kind={kind} class="aspect-[4/3] w-full" />
     {statusLabel && (
       <span
         class:list={[

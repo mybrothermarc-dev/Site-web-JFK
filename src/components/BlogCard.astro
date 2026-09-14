@@ -1,0 +1,45 @@
+---
+import SmartImage from './SmartImage.astro';
+import type { Lang } from '../i18n/routes';
+
+interface Props {
+  href: string;
+  title: string;
+  excerpt: string;
+  date: Date;
+  cover?: string | null;
+  coverAlt?: string;
+  lang: Lang;
+}
+
+const { href, title, excerpt, date, cover, coverAlt, lang } = Astro.props;
+const formattedDate = new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', { dateStyle: 'long' }).format(date);
+---
+
+<article class="card card-hover group flex h-full flex-col overflow-hidden">
+  <a href={href} class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+    <SmartImage
+      src={cover}
+      alt={coverAlt || title}
+      label={title}
+      kind="general"
+      tone="leaf"
+      widths={[480, 800]}
+      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      class="aspect-[16/10] w-full transition-transform duration-500 ease-out-expo group-hover:scale-[1.03]"
+    />
+  </a>
+  <div class="flex flex-1 flex-col gap-3 p-6">
+    <time datetime={date.toISOString()} class="text-sm font-medium text-ink-500">{formattedDate}</time>
+    <h2 class="font-display text-xl leading-snug text-ink-800" style="font-size: 1.3rem;">
+      <a href={href} class="transition-colors hover:text-clay-600">{title}</a>
+    </h2>
+    <p class="line-clamp-3 flex-1 text-[0.95rem] leading-relaxed text-ink-600">{excerpt}</p>
+    <a href={href} class="link-arrow mt-1 text-sm">
+      {lang === 'fr' ? 'Lire l’article' : 'Read the article'}
+      <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h11m0 0l-4-4m4 4l-4 4" />
+      </svg>
+    </a>
+  </div>
+</article>

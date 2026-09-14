@@ -89,6 +89,7 @@ const projects = (await getCollection('projects2026')).sort((a, b) => a.data.ord
             role={item.data.role.fr}
             quote={item.data.quote.fr}
             tone={item.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            photo={item.data.photo}
           />
         ))}
       </div>

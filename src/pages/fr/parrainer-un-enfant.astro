@@ -87,6 +87,7 @@ const children = (await getCollection('children')).sort((a, b) => a.data.order -
             subtitle={lang === 'fr' ? `${child.data.age} ans` : `${child.data.age} years old`}
             description={child.data.bio.fr}
             tone={child.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            photo={child.data.photoConsent ? child.data.photo : null}
             kind="child"
             statusLabel={child.data.status === 'available' ? t.common.available : t.common.sponsored}
             statusVariant={child.data.status}

@@ -1,0 +1,16 @@
+{
+  "stats": [
+    { "value": 8000, "suffix": "+", "labelEn": "lives reached with the Gospel", "labelFr": "vies touchées par l’Évangile" },
+    { "value": 65, "suffix": "+", "labelEn": "churches planted", "labelFr": "églises implantées" },
+    { "value": 500, "suffix": "+", "labelEn": "leaders trained", "labelFr": "leaders équipés" },
+    { "value": 450, "suffix": "+", "labelEn": "villages impacted", "labelFr": "villages impactés" },
+    { "value": 150, "suffix": "+", "labelEn": "baptisms", "labelFr": "baptêmes" },
+    { "value": 1300, "suffix": "+", "labelEn": "medical consultations", "labelFr": "consultations médicales" },
+    { "value": 656, "suffix": "", "labelEn": "dental treatments", "labelFr": "soins dentaires" },
+    { "value": 72, "suffix": "", "labelEn": "acupuncture treatments", "labelFr": "traitements d’acupuncture" },
+    { "value": 500, "suffix": "+", "labelEn": "children in school", "labelFr": "enfants scolarisés" },
+    { "value": 16, "suffix": "", "labelEn": "missionary teachers trained", "labelFr": "enseignants missionnaires formés" },
+    { "value": 10, "suffix": "", "labelEn": "schools opened", "labelFr": "écoles ouvertes" },
+    { "value": 400, "suffix": " kg/month", "labelEn": "of fish produced monthly", "labelFr": "de poissons produits par mois" }
+  ]
+}

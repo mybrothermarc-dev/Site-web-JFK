@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/Hero.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const lang = 'fr' as const;
+
+// Seuls les articles traduits (titre + texte en français) apparaissent sur le site français
+const frenchBodies = new Set((await getCollection('blogFr')).map((entry) => entry.id));
+const posts = (
+  await getCollection('blog', ({ id, data }) => data.published && Boolean(data.titleFr) && frenchBodies.has(id))
+).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout
+  lang={lang}
+  currentRoute="blog"
+  title="Nouvelles du terrain"
+  description="Récits, nouvelles et prières exaucées depuis les villages de Madagascar servis par Jesus Family Kingdom."
+>
+  <Hero
+    title="Nouvelles du terrain"
+    subtitle="Récits, nouvelles et prières exaucées depuis les villages que Jesus Family Kingdom sert à travers Madagascar."
+    imageLabel="Nouvelles de Jesus Family Kingdom"
+    tone="leaf"
+  />
+
+  <section class="section bg-paper">
+    <div class="container-jfk">
+      {
+        posts.length > 0 ? (
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <BlogCard
+                href={`/fr/blog/${post.id}`}
+                title={post.data.titleFr}
+                excerpt={post.data.excerptFr || post.data.excerpt}
+                date={post.data.date}
+                cover={post.data.cover}
+                coverAlt={post.data.coverAlt}
+                lang={lang}
+              />
+            ))}
+          </div>
+        ) : (
+          <p class="mx-auto max-w-xl text-center text-lg text-ink-600">
+            Aucun article pour le moment. Les premiers récits du terrain arrivent bientôt.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

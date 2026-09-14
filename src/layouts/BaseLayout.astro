@@ -14,14 +14,26 @@ interface Props {
   /** Désactive le bandeau de don persistant (ex: sur la page Don elle-même) */
   hideDonateBanner?: boolean;
   ogImage?: string;
+  /** Adresses de cette page dans chaque langue, quand elles ne suivent pas la carte des pages (ex : article de blog) */
+  alternates?: { en: string; fr?: string };
 }
 
-const { lang, currentRoute, title, description, hideDonateBanner = false, ogImage = '/images/og-default.jpg' } = Astro.props;
+const {
+  lang,
+  currentRoute,
+  title,
+  description,
+  hideDonateBanner = false,
+  ogImage = '/images/og-default.jpg',
+  alternates,
+} = Astro.props;
 
-const canonicalPath = routes[currentRoute][lang];
-const canonicalUrl = new URL(canonicalPath, siteConfig.url).toString();
-const alternateFr = new URL(routes[currentRoute].fr, siteConfig.url).toString();
-const alternateEn = new URL(routes[currentRoute].en, siteConfig.url).toString();
+// Un article de blog peut ne pas exister en français : on ne déclare que les versions réelles
+const pagePaths: { en: string; fr?: string } = alternates ?? routes[currentRoute];
+const canonicalUrl = new URL(pagePaths[lang] ?? routes[currentRoute][lang], siteConfig.url).toString();
+const alternateEn = new URL(pagePaths.en, siteConfig.url).toString();
+const alternateFr = pagePaths.fr ? new URL(pagePaths.fr, siteConfig.url).toString() : undefined;
+const otherLangHref = alternates ? (pagePaths[otherLang(lang)] ?? routes[currentRoute][otherLang(lang)]) : undefined;
 const fullTitle = `${title} | ${siteConfig.name}`;
 
 const structuredData = {
@@ -58,9 +70,9 @@ const structuredData = {
     <meta name="description" content={description} />
 
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="fr" href={alternateFr} />
     <link rel="alternate" hreflang="en" href={alternateEn} />
-    <link rel="alternate" hreflang="x-default" href={alternateFr} />
+    {alternateFr && <link rel="alternate" hreflang="fr" href={alternateFr} />}
+    <link rel="alternate" hreflang="x-default" href={alternateEn} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -91,7 +103,7 @@ const structuredData = {
     <a href="#main-content" class="skip-link">
       {lang === 'fr' ? 'Passer au contenu' : 'Skip to content'}
     </a>
-    <Header lang={lang} currentRoute={currentRoute} />
+    <Header lang={lang} currentRoute={currentRoute} otherLangHref={otherLangHref} />
     <main id="main-content">
       <slot />
     </main>

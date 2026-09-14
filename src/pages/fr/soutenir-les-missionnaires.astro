@@ -48,6 +48,7 @@ const donateLink = `${routeUrl('donate', lang)}?fleche=missionnaires`;
             subtitle={m.data.zone}
             description={`${m.data.summary.fr} ${m.data.stats.fr}.`}
             tone={m.data.photoPlaceholder as 'sun' | 'sky' | 'leaf'}
+            photo={m.data.photo}
             kind="missionary"
             ctaLabel={t.common.supportMissionary}
             ctaHref={donateLink}

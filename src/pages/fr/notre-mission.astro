@@ -3,9 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import PillarCard from '../../components/PillarCard.astro';
 import Timeline from '../../components/Timeline.astro';
-import PlaceholderImage from '../../components/PlaceholderImage.astro';
+import SmartImage from '../../components/SmartImage.astro';
 import { missionContent, missionTimelineFr } from '../../data/pages/mission';
-import { annualReportUrl } from '../../data/site';
+import { annualReportUrl, pageImages } from '../../data/site';
 
 const lang = 'fr' as const;
 const c = missionContent[lang];
@@ -23,7 +23,7 @@ const c = missionContent[lang];
 
   <section class="section bg-sky-50">
     <div class="container-jfk grid max-w-5xl gap-10 lg:grid-cols-[280px,1fr] lg:items-center">
-      <PlaceholderImage tone="sun" label={c.presidentName} kind="general" class="mx-auto aspect-square w-48 rounded-full lg:w-full" />
+      <SmartImage src={pageImages.president} alt={c.presidentName} label={c.presidentName} tone="sun" kind="general" widths={[320, 640]} sizes="(min-width: 1024px) 280px, 192px" class="mx-auto aspect-square w-48 rounded-full lg:w-full" />
       <div>
         <h2 class="text-2xl sm:text-3xl">{c.presidentTitle}</h2>
         <blockquote class="mt-4 font-display text-xl font-semibold leading-snug text-night">« {c.presidentQuote} »</blockquote>
@@ -81,13 +81,15 @@ const c = missionContent[lang];
     </div>
   </section>
 
-  <section class="section bg-night text-white">
-    <div class="container-jfk max-w-2xl text-center">
-      <h2 class="text-3xl text-white sm:text-4xl">{c.reportTitle}</h2>
-      <p class="mt-4 text-white/80">{c.reportText}</p>
-      <a href={annualReportUrl} target="_blank" rel="noopener noreferrer" class="btn-primary mt-6 inline-flex">
-        {c.reportCta}
-      </a>
-    </div>
-  </section>
+  {annualReportUrl && (
+    <section class="section bg-night text-white">
+      <div class="container-jfk max-w-2xl text-center">
+        <h2 class="text-3xl text-white sm:text-4xl">{c.reportTitle}</h2>
+        <p class="mt-4 text-white/80">{c.reportText}</p>
+        <a href={annualReportUrl} target="_blank" rel="noopener noreferrer" class="btn-primary mt-6 inline-flex">
+          {c.reportCta}
+        </a>
+      </div>
+    </section>
+  )}
 </BaseLayout>

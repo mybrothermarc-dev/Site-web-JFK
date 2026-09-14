@@ -1,13 +1,15 @@
 ---
-import PlaceholderImage from './PlaceholderImage.astro';
+import SmartImage from './SmartImage.astro';
 
 interface Props {
   name: string;
   role: string;
   quote: string;
   tone?: 'sun' | 'sky' | 'leaf';
+  /** Portrait choisi dans l'admin (avec l'accord de la personne) */
+  photo?: string | null;
 }
-const { name, role, quote, tone = 'sun' } = Astro.props;
+const { name, role, quote, tone = 'sun', photo } = Astro.props;
 ---
 
 <figure class="card card-hover flex h-full flex-col gap-5 p-7 sm:p-8">
@@ -18,7 +20,17 @@ const { name, role, quote, tone = 'sun' } = Astro.props;
     {quote}
   </blockquote>
   <figcaption class="flex items-center gap-3.5 border-t border-ink-800/10 pt-5">
-    <PlaceholderImage tone={tone} label={name} kind="general" hideLabel class="h-12 w-12 shrink-0 rounded-full ring-1 ring-ink-800/10" />
+    <SmartImage
+      src={photo}
+      alt={name}
+      label={name}
+      tone={tone}
+      kind="general"
+      hideLabel
+      widths={[96, 192]}
+      sizes="48px"
+      class="h-12 w-12 shrink-0 rounded-full ring-1 ring-ink-800/10"
+    />
     <div>
       <p class="font-semibold text-ink-800">{name}</p>
       <p class="text-sm text-ink-500">{role}</p>

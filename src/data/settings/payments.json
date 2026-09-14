@@ -1,0 +1,15 @@
+{
+  "stripeOneTime": "https://buy.stripe.com/STRIPE_LINK_A_REMPLACER_PONCTUEL",
+  "stripeMonthly": "https://buy.stripe.com/STRIPE_LINK_A_REMPLACER_MENSUEL",
+  "paypal": "https://paypal.me/PAYPAL_LINK_A_REMPLACER",
+  "bank": {
+    "accountName": "Jesus Family Kingdom — NOM_BANQUE_A_COMPLETER",
+    "iban": "IBAN_A_COMPLETER",
+    "bic": "BIC_A_COMPLETER",
+    "bankName": "NOM_DE_LA_BANQUE_A_COMPLETER"
+  },
+  "mobileMoney": [
+    { "provider": "Mvola", "number": "NUMERO_MVOLA_A_COMPLETER" },
+    { "provider": "Orange Money", "number": "NUMERO_ORANGE_MONEY_A_COMPLETER" }
+  ]
+}

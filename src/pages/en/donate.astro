@@ -117,11 +117,13 @@ const c = donateContent[lang];
         ))}
       </div>
 
-      <div class="mt-10 text-center">
-        <a href={annualReportUrl} class="btn-outline-dark inline-flex" target="_blank" rel="noopener noreferrer">
-          {c.reportCta}
-        </a>
-      </div>
+      {annualReportUrl && (
+        <div class="mt-10 text-center">
+          <a href={annualReportUrl} class="btn-outline-dark inline-flex" target="_blank" rel="noopener noreferrer">
+            {c.reportCta}
+          </a>
+        </div>
+      )}
     </div>
   </section>
 </BaseLayout>
