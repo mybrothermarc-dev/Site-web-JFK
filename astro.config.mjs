@@ -29,6 +29,15 @@ export default defineConfig({
   trailingSlash: 'ignore',
   devToolbar: { enabled: false },
   server: isAdmin ? { open: '/keystatic' } : {},
+  // Admin : React doit être pré-empaqueté par Vite, sinon la page Keystatic reste blanche
+  // (« does not provide an export named useState »).
+  vite: isAdmin
+    ? {
+        optimizeDeps: {
+          include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
+        },
+      }
+    : {},
   i18n: {
     // L'anglais est la langue principale du site ; le français vient en second.
     defaultLocale: 'en',
