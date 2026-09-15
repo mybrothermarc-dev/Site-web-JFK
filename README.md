@@ -86,12 +86,18 @@ git push -u origin main
 
 Le site a une interface d'administration qui tourne **uniquement sur ton ordinateur**. Rien de l'admin n'est publié en ligne.
 
-### Ouvrir l'admin
+### Ouvrir le Studio JFK
 
-1. Double-clique sur **`Ouvrir-Admin-JFK.bat`**, à la racine du dossier du site.
-2. Une fenêtre noire s'ouvre : **laisse-la ouverte** pendant que tu travailles. Ton navigateur s'ouvre tout seul sur l'admin (`http://127.0.0.1:4321/keystatic`).
-3. Pour voir le site pendant que tu travailles : `http://127.0.0.1:4321/en/`.
-4. Pour arrêter l'admin : ferme la fenêtre noire.
+1. Double-clique sur le raccourci **Studio JFK** du bureau (ou sur **`Studio-JFK.vbs`**, à la racine du dossier du site). Aucune fenêtre noire : ton navigateur s'ouvre tout seul sur le tableau de bord (`http://127.0.0.1:4400`).
+2. L'admin démarre en arrière-plan, en 30 secondes environ. La pastille « Admin prêt » passe au vert quand c'est bon.
+3. Le Studio a trois onglets :
+   - **Accueil** : raccourcis vers chaque rubrique et liste des changements pas encore publiés ;
+   - **Modifier le contenu** : l'admin ;
+   - **Aperçu du site** : le site avec tes dernières modifications, en anglais ou en français.
+4. Si tu fermes l'onglet, double-clique à nouveau sur le raccourci : le Studio se rouvre là où il en était. Pour l'arrêter complètement : **Accueil › Fermer le Studio**.
+5. Si la page de l'admin reste blanche : **Accueil › Redémarrer l'admin**.
+
+L'ancien lanceur `Ouvrir-Admin-JFK.bat` (avec fenêtre noire) marche toujours, mais ne l'utilise pas en même temps que le Studio.
 
 Les boutons de l'admin sont en anglais : **Add** = ajouter, **Save** = enregistrer, **Choose file** = choisir un fichier, **Remove** = retirer. Chaque champ est expliqué en français.
 
@@ -116,10 +122,10 @@ Les boutons de l'admin sont en anglais : **Add** = ajouter, **Save** = enregistr
 ### Publier tes modifications
 
 1. Clique sur **Save** dans l'admin.
-2. Double-clique sur **`Publier-Site-JFK.bat`**. Il vérifie que le site se construit, enregistre tes modifications et les envoie sur GitHub.
-3. Cloudflare met le site en ligne à jour en 2 minutes environ.
+2. Dans le Studio, clique sur le bouton vert **Publier le site** (en haut à droite). Il montre la liste de ce qui va partir, puis, après confirmation, vérifie que le site se construit, enregistre tes modifications et les envoie sur GitHub, en affichant chaque étape.
+3. Cloudflare met le site en ligne à jour en 2 à 3 minutes.
 
-Si la vérification échoue, **rien n'est publié** : le fichier `build.log` créé dans le dossier contient l'explication, à envoyer à Claude.
+Si une étape échoue, le Studio l'explique en français. Si c'est la vérification, **rien n'est publié** : clique sur **Copier le détail** et envoie-le à Claude (le fichier `build.log` contient aussi l'explication). Sans le Studio, `Publier-Site-JFK.bat` fait la même publication.
 
 ### Pas encore dans l'admin
 
@@ -131,6 +137,7 @@ Les longs textes des pages (histoire de JFK, piliers, FAQ du parrainage…) sont
 - Réglages : `src/data/settings/*.json`, remis dans leur forme habituelle par `src/data/site.ts`
 - Photos : `src/assets/images/**`, optimisées au build via `src/lib/images.ts` et `src/components/SmartImage.astro`
 - Configuration de l'admin : `keystatic.config.ts`. L'admin est lancé par `npm run admin` (variable `JFK_ADMIN=1`). Le build de production ne le charge jamais.
+- Studio JFK : `scripts/studio/server.mjs` (serveur Node sans dépendance, port 4400) et `scripts/studio/index.html`. Il lance l'admin avec `JFK_ADMIN=1 JFK_STUDIO=1`, lit `git status` pour les changements en attente et publie via `astro build --force` → `git commit` → `git push`. `npm run studio` le lance dans un terminal. Journal : `studio.log`.
 - `@keystatic/astro` est volontairement bloqué en version **5.2.0** : la 6.x est incompatible avec Astro 5.
 
 ## 6. Écrire un article de blog
@@ -138,7 +145,7 @@ Les longs textes des pages (histoire de JFK, piliers, FAQ du parrainage…) sont
 1. Dans l'admin : **Contenu › Blog › Add**.
 2. Remplis le **titre**, le **résumé** et l'**article en anglais**. Ajoute une photo de couverture si tu en as une.
 3. Facultatif : remplis le titre, le résumé et l'article **en français**. Sans version française, l'article n'apparaît que sur le site anglais.
-4. **Save**, puis double-clique sur `Publier-Site-JFK.bat`.
+4. **Save**, puis **Publier le site** dans le Studio.
 
 L'onglet **Blog** apparaît dans le menu du site dès le premier article publié. Pour garder un article en brouillon, décoche **Publié**. La barre d'outils de l'éditeur permet d'ajouter des titres, du gras, des listes, des liens et des images.
 
@@ -149,7 +156,7 @@ Tous les formulaires du site (contact, demande de parrainage, engagement de pri�
 1. Va sur [web3forms.com](https://web3forms.com) et crée une clé d'accès gratuite avec ton adresse email.
 2. Copie la clé reçue.
 3. Dans l'admin : **Réglages du site › Coordonnées et réseaux › Clé Web3Forms**. Colle la clé, puis **Save**.
-4. Double-clique sur `Publier-Site-JFK.bat`.
+4. Clique sur **Publier le site** dans le Studio.
 
 Chaque formulaire envoie un email avec un objet différent (ex. « New child sponsorship request ») pour t'aider à trier les demandes.
 

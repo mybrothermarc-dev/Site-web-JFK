@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio JFK</title>
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Petrona:wght@600;700&display=swap">
+<style>
+  :root {
+    --paper: #F5F8FA;
+    --paper-2: #E9EFF3;
+    --line: #DAE3E9;
+    --white: #FFFFFF;
+    --ink: #122F3A;
+    --ink-soft: #3D5563;
+    --blue: #12749F;
+    --blue-dark: #0E5C7E;
+    --blue-tint: #EAF6FC;
+    --green: #4A7A28;
+    --green-dark: #385C20;
+    --green-tint: #F0F7E7;
+    --gold: #8F5A0C;
+    --gold-tint: #FEF5E4;
+    --coral: #B8331F;
+    --coral-tint: #FDECE9;
+    --bar-h: 68px;
+    --radius: 14px;
+    --shadow: 0 2px 8px -2px rgba(18, 47, 58, .10), 0 8px 28px -8px rgba(18, 47, 58, .14);
+    --display: "Petrona", Georgia, serif;
+    --body: "Hanken Grotesk", system-ui, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 var(--body); }
+  h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; }
+  button { font: inherit; cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Barre du haut ---------- */
+  .bar {
+    position: sticky; top: 0; z-index: 10;
+    height: var(--bar-h); display: flex; align-items: center; gap: 24px;
+    padding: 0 20px; background: var(--white); border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 1.2rem; white-space: nowrap; }
+  .brand img { height: 40px; width: auto; }
+  .tabs { display: flex; gap: 4px; background: var(--paper-2); padding: 4px; border-radius: 12px; }
+  .tab { border: 0; background: transparent; color: var(--ink-soft); padding: 8px 16px; border-radius: 9px; font-weight: 600; white-space: nowrap; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(18, 47, 58, .15); }
+  .bar-end { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .pending { color: var(--ink-soft); font-weight: 500; white-space: nowrap; }
+  .pending strong { color: var(--ink); }
+
+  .btn { border: 0; border-radius: 10px; padding: 10px 18px; font-weight: 600; min-height: 42px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+  .btn-publish { background: var(--green); color: #fff; }
+  .btn-publish:hover:not(:disabled) { background: var(--green-dark); }
+  .btn-publish:disabled { background: var(--paper-2); color: var(--ink-soft); }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-quiet { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+  .btn-quiet:hover { color: var(--ink); background: var(--paper); }
+  .btn-small { min-height: 34px; padding: 6px 12px; font-size: .9rem; }
+
+  /* ---------- Pastille d'état de l'admin ---------- */
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; font-size: .88rem; font-weight: 600; white-space: nowrap; }
+  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .pill[data-state="ready"] { background: var(--green-tint); color: var(--green); }
+  .pill[data-state="starting"] { background: var(--gold-tint); color: var(--gold); }
+  .pill[data-state="starting"]::before { animation: pulse 1.2s ease-in-out infinite; }
+  .pill[data-state="error"], .pill[data-state="stopped"] { background: var(--coral-tint); color: var(--coral); }
+  @keyframes pulse { 50% { opacity: .25; } }
+
+  /* ---------- Accueil ---------- */
+  .home { max-width: 1080px; margin: 0 auto; padding: 40px 24px 64px; }
+  .home-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; }
+  .home-head h1 { font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem); }
+  .home-head p { margin: 6px 0 0; color: var(--ink-soft); font-size: 1.05rem; }
+
+  .alert { margin-top: 24px; padding: 16px 20px; border-radius: var(--radius); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .alert p { margin: 0; flex: 1 1 320px; }
+  .alert-error { background: var(--coral-tint); color: var(--ink); }
+  .alert-wait { background: var(--gold-tint); color: var(--ink); }
+
+  .section-title { font-size: 1.35rem; margin: 40px 0 16px; }
+  .shortcuts { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .shortcut {
+    text-align: left; border: 1px solid var(--line); background: var(--white); border-radius: var(--radius);
+    padding: 16px 18px; color: var(--ink); display: grid; gap: 2px; transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .shortcut:hover { border-color: var(--blue); box-shadow: var(--shadow); transform: translateY(-1px); }
+  .shortcut strong { font-size: 1.02rem; }
+  .shortcut span { color: var(--ink-soft); font-size: .92rem; }
+
+  .columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-top: 40px; align-items: start; }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; }
+  .panel h2 { font-size: 1.3rem; }
+  .panel-sub { color: var(--ink-soft); margin: 4px 0 0; }
+
+  .changes { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
+  .change { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: var(--paper); }
+  .change-text { flex: 1; min-width: 0; }
+  .change-area { display: block; font-size: .82rem; color: var(--ink-soft); }
+  .change-label { display: block; font-weight: 600; overflow-wrap: anywhere; }
+  .tag { font-size: .78rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+  .tag-added { background: var(--green-tint); color: var(--green); }
+  .tag-modified { background: var(--blue-tint); color: var(--blue-dark); }
+  .tag-deleted { background: var(--coral-tint); color: var(--coral); }
+  .empty { margin: 16px 0 0; padding: 18px; border-radius: 10px; background: var(--green-tint); color: var(--green-dark); font-weight: 600; }
+
+  .steps-help { margin: 14px 0 0; padding-left: 0; list-style: none; counter-reset: s; display: grid; gap: 14px; }
+  .steps-help li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 10px; }
+  .steps-help li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--blue-tint); color: var(--blue-dark); font-weight: 700; display: grid; place-items: center; }
+  .last-publish { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: .95rem; }
+  .footer-actions { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ---------- Onglets avec l'admin ou l'aperçu ---------- */
+  .frame-page { height: calc(100vh - var(--bar-h)); display: flex; flex-direction: column; }
+  .frame-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 16px; background: var(--white); border-bottom: 1px solid var(--line); }
+  .frame-tools .hint { color: var(--ink-soft); font-size: .92rem; margin-right: auto; }
+  .frame-wrap { position: relative; flex: 1; }
+  .frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--white); }
+  .frame-wait { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); padding: 24px; text-align: center; }
+  .frame-wait h2 { font-size: 1.5rem; }
+  .frame-wait p { color: var(--ink-soft); max-width: 460px; margin: 8px auto 18px; }
+  .spinner { width: 42px; height: 42px; margin: 0 auto 18px; border-radius: 50%; border: 4px solid var(--line); border-top-color: var(--blue); animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .seg { display: inline-flex; background: var(--paper-2); padding: 3px; border-radius: 9px; }
+  .seg button { border: 0; background: transparent; padding: 5px 12px; border-radius: 7px; font-weight: 600; color: var(--ink-soft); }
+  .seg button[aria-pressed="true"] { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(18, 47, 58, .15); }
+
+  /* ---------- Fenêtre de publication ---------- */
+  dialog { border: 0; border-radius: 18px; padding: 0; width: min(560px, calc(100vw - 32px)); color: var(--ink); box-shadow: 0 24px 60px -12px rgba(18, 47, 58, .35); }
+  dialog::backdrop { background: rgba(12, 32, 40, .45); }
+  .dlg { padding: 28px 28px 24px; }
+  .dlg h2 { font-size: 1.6rem; }
+  .dlg p { color: var(--ink-soft); margin: 8px 0 0; }
+  .dlg .changes { max-height: 260px; overflow: auto; }
+  .dlg-note { margin-top: 16px !important; padding: 12px 14px; border-radius: 10px; background: var(--gold-tint); color: var(--ink) !important; font-size: .95rem; }
+  .dlg-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .progress { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
+  .progress li { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--ink-soft); }
+  .progress li[data-status="running"], .progress li[data-status="done"] { color: var(--ink); }
+  .progress li[data-status="error"] { color: var(--coral); }
+  .dot { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none; border: 2px solid var(--line); font-size: .85rem; }
+  [data-status="running"] .dot { border-color: var(--line); border-top-color: var(--blue); animation: spin 1s linear infinite; }
+  [data-status="done"] .dot { background: var(--green); border-color: var(--green); color: #fff; }
+  [data-status="error"] .dot { background: var(--coral); border-color: var(--coral); color: #fff; }
+  .result-ok { margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--green-tint); color: var(--green-dark); font-weight: 600; }
+  .result-error { margin-top: 20px; padding: 16px; border-radius: 12px; background: var(--coral-tint); color: var(--ink); }
+  details { margin-top: 12px; }
+  summary { cursor: pointer; font-weight: 600; color: var(--ink-soft); }
+  pre { white-space: pre-wrap; word-break: break-word; max-height: 200px; overflow: auto; background: var(--paper); padding: 12px; border-radius: 8px; font-size: .8rem; }
+
+  @media (max-width: 900px) {
+    :root { --bar-h: auto; }
+    .bar { height: auto; flex-wrap: wrap; padding: 10px 16px; gap: 10px; }
+    .bar-end { margin-left: 0; width: 100%; justify-content: space-between; }
+    .columns { grid-template-columns: 1fr; }
+    .frame-page { height: 80vh; }
+  }
+</style>
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><img src="/logo.png" alt=""><span>Studio JFK</span></div>
+    <nav class="tabs" role="tablist" aria-label="Sections du Studio">
+      <button class="tab" role="tab" data-tab="home" aria-selected="true">Accueil</button>
+      <button class="tab" role="tab" data-tab="edit" aria-selected="false">Modifier le contenu</button>
+      <button class="tab" role="tab" data-tab="preview" aria-selected="false">Aperçu du site</button>
+    </nav>
+    <div class="bar-end">
+      <span class="pending" id="pending-label" aria-live="polite">Chargement…</span>
+      <button class="btn btn-publish" id="publish-btn" disabled>Publier le site</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= Accueil ================= -->
+    <section id="tab-home" role="tabpanel">
+      <div class="home">
+        <div class="home-head">
+          <div>
+            <h1>Bienvenue dans le Studio JFK</h1>
+            <p>Modifie le site, regarde le résultat, puis publie-le en un clic.</p>
+          </div>
+          <span class="pill" id="site-pill" data-state="starting">Démarrage de l’admin…</span>
+        </div>
+
+        <div class="alert alert-wait" id="alert-wait" hidden>
+          <p><strong>L’admin démarre.</strong> Cela prend environ 30 secondes la première fois. Tu peux déjà regarder tes changements en attente.</p>
+        </div>
+        <div class="alert alert-error" id="alert-error" hidden>
+          <p><strong id="alert-error-title">L’admin ne répond pas.</strong> Un redémarrage règle presque toujours le problème, et tes modifications enregistrées ne sont pas perdues.</p>
+          <button class="btn btn-primary" data-action="restart">Redémarrer l’admin</button>
+        </div>
+
+        <h2 class="section-title">Que veux-tu modifier ?</h2>
+        <div class="shortcuts">
+          <button class="shortcut" data-open="/keystatic/singleton/pageImages"><strong>Photos des pages</strong><span>Les grandes images en haut de chaque page</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/children"><strong>Enfants à parrainer</strong><span>Fiches, photos et statut de parrainage</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/blog"><strong>Blog</strong><span>Écrire ou modifier un article</span></button>
+          <button class="shortcut" data-open="/keystatic/singleton/impact"><strong>Chiffres d’impact</strong><span>Les compteurs de la page d’accueil</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/missionaries"><strong>Missionnaires</strong><span>Présentations et résultats</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/teachers"><strong>Enseignants</strong><span>Enseignants missionnaires et villages</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/projects2026"><strong>Projets 2026</strong><span>Objectifs et montants déjà réunis</span></button>
+          <button class="shortcut" data-open="/keystatic/singleton/contacts"><strong>Coordonnées et réseaux</strong><span>Téléphones, e-mail, Facebook, rapport annuel</span></button>
+          <button class="shortcut" data-open="/keystatic/singleton/payments"><strong>Moyens de paiement</strong><span>Stripe, PayPal, virement, Mobile Money</span></button>
+          <button class="shortcut" data-open="/keystatic/singleton/amounts"><strong>Montants des dons</strong><span>Formules de parrainage et répartition</span></button>
+          <button class="shortcut" data-open="/keystatic/collection/testimonials"><strong>Témoignages</strong><span>Citations et portraits</span></button>
+          <button class="shortcut" data-open="/keystatic"><strong>Tout le contenu</strong><span>Le menu complet de l’admin</span></button>
+        </div>
+
+        <div class="columns">
+          <section class="panel" aria-labelledby="changes-title">
+            <h2 id="changes-title">Changements pas encore publiés</h2>
+            <p class="panel-sub">Tout ce que tu as enregistré avec « Save » et qui n’est pas encore sur le site en ligne.</p>
+            <div id="changes-box"></div>
+          </section>
+
+          <section class="panel" aria-labelledby="how-title">
+            <h2 id="how-title">Comment ça marche</h2>
+            <ol class="steps-help">
+              <li><span><strong>Modifie</strong> dans l’onglet « Modifier le contenu », puis clique sur <strong>Save</strong> (enregistrer).</span></li>
+              <li><span><strong>Vérifie</strong> le résultat dans l’onglet « Aperçu du site ».</span></li>
+              <li><span><strong>Publie</strong> avec le bouton vert en haut à droite. Le site en ligne est à jour 2 à 3 minutes après.</span></li>
+            </ol>
+            <p class="last-publish" id="last-publish">&nbsp;</p>
+          </section>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn btn-quiet btn-small" data-action="restart">La page de l’admin reste blanche ? Redémarrer l’admin</button>
+          <button class="btn btn-quiet btn-small" data-action="quit">Fermer le Studio</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Modifier ================= -->
+    <section id="tab-edit" class="frame-page" role="tabpanel" hidden>
+      <div class="frame-tools">
+        <span class="hint">N’oublie pas de cliquer sur <strong>Save</strong> après chaque modification.</span>
+        <button class="btn btn-quiet btn-small" data-action="reload-edit">Recharger</button>
+        <button class="btn btn-quiet btn-small" data-action="tab-edit">Ouvrir dans un onglet</button>
+      </div>
+      <div class="frame-wrap">
+        <iframe id="edit-frame" title="Admin du site"></iframe>
+        <div class="frame-wait" data-wait></div>
+      </div>
+    </section>
+
+    <!-- ================= Aperçu ================= -->
+    <section id="tab-preview" class="frame-page" role="tabpanel" hidden>
+      <div class="frame-tools">
+        <span class="hint">Aperçu sur ton ordinateur, avec tes dernières modifications enregistrées.</span>
+        <div class="seg" role="group" aria-label="Langue de l’aperçu">
+          <button data-lang="/en/" aria-pressed="true">Anglais</button>
+          <button data-lang="/fr/" aria-pressed="false">Français</button>
+        </div>
+        <button class="btn btn-quiet btn-small" data-action="reload-preview">Actualiser</button>
+        <button class="btn btn-quiet btn-small" data-action="tab-preview">Ouvrir dans un onglet</button>
+      </div>
+      <div class="frame-wrap">
+        <iframe id="preview-frame" title="Aperçu du site"></iframe>
+        <div class="frame-wait" data-wait></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="publish-dialog" aria-labelledby="dlg-title">
+    <div class="dlg" id="dlg-body"></div>
+  </dialog>
+
+<script>
+  const $ = (selector) => document.querySelector(selector);
+  const $$ = (selector) => [...document.querySelectorAll(selector)];
+  const esc = (text) => String(text).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const post = (path) => fetch(path, { method: 'POST', headers: { 'X-Studio': '1' } });
+
+  let status = null;
+  let tab = 'home';
+  let editPath = '/keystatic';
+  let previewPath = '/en/';
+  let dialogMode = null; // 'confirm' | 'job'
+  let timer = null;
+
+  const KIND = { added: ['Nouveau', 'tag-added'], modified: ['Modifié', 'tag-modified'], deleted: ['Supprimé', 'tag-deleted'] };
+  const SITE_STATE = { ready: 'Admin prêt', starting: 'Démarrage de l’admin…', error: 'Admin arrêté', stopped: 'Admin arrêté' };
+
+  function relativeTime(time) {
+    const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
+    const minutes = Math.round((time - Date.now()) / 60000);
+    if (Math.abs(minutes) < 60) return rtf.format(minutes, 'minute');
+    const hours = Math.round(minutes / 60);
+    if (Math.abs(hours) < 24) return rtf.format(hours, 'hour');
+    return rtf.format(Math.round(hours / 24), 'day');
+  }
+
+  function changesList(items) {
+    const visible = items.filter((item) => !item.technical);
+    const technical = items.length - visible.length;
+    const rows = visible.map((item) => {
+      const [kindLabel, kindClass] = KIND[item.kind];
+      return `<li class="change"><span class="change-text"><span class="change-area">${esc(item.area)}</span><span class="change-label">${esc(item.label)}</span></span><span class="tag ${kindClass}">${kindLabel}</span></li>`;
+    });
+    if (technical) {
+      rows.push(`<li class="change"><span class="change-text"><span class="change-area">Technique</span><span class="change-label">${technical} réglage${technical > 1 ? 's' : ''} technique${technical > 1 ? 's' : ''} du site</span></span><span class="tag tag-modified">Modifié</span></li>`);
+    }
+    return `<ul class="changes">${rows.join('')}</ul>`;
+  }
+
+  const hasSomethingToPublish = () => status && (status.items.length > 0 || status.ahead > 0);
+
+  // ---------- Affichage ----------
+
+  function render() {
+    if (!status) return;
+    const { site, items, ahead, lastPublish, job } = status;
+
+    const pill = $('#site-pill');
+    pill.dataset.state = site.state;
+    pill.textContent = SITE_STATE[site.state] ?? site.state;
+    $('#alert-wait').hidden = site.state !== 'starting';
+    $('#alert-error').hidden = !(site.state === 'error' || site.state === 'stopped');
+    if (site.message) $('#alert-error-title').textContent = site.message;
+
+    // Barre du haut
+    const count = items.filter((item) => !item.technical).length || items.length;
+    const btn = $('#publish-btn');
+    if (job?.running) {
+      $('#pending-label').textContent = 'Publication en cours…';
+      btn.disabled = true;
+    } else if (hasSomethingToPublish()) {
+      $('#pending-label').innerHTML = count
+        ? `<strong>${count}</strong> changement${count > 1 ? 's' : ''} à publier`
+        : 'Modifications prêtes à envoyer';
+      btn.disabled = false;
+    } else {
+      $('#pending-label').textContent = 'Tout est publié';
+      btn.disabled = true;
+    }
+
+    // Accueil
+    if (status.gitError) {
+      $('#changes-box').innerHTML = `<p class="result-error">${esc(status.gitError)}</p>`;
+    } else if (items.length) {
+      $('#changes-box').innerHTML = changesList(items);
+    } else if (ahead) {
+      $('#changes-box').innerHTML = '<p class="dlg-note">Des modifications déjà enregistrées attendent d’être envoyées. Clique sur « Publier le site ».</p>';
+    } else {
+      $('#changes-box').innerHTML = '<p class="empty">Rien en attente : le site en ligne est à jour.</p>';
+    }
+    $('#last-publish').textContent = lastPublish
+      ? `Dernier envoi sur GitHub : ${relativeTime(lastPublish.time)}.`
+      : '';
+
+    renderFrames();
+    if (dialogMode) renderDialog();
+  }
+
+  function waitScreen() {
+    const state = status?.site.state;
+    if (state === 'error' || state === 'stopped') {
+      return `<div><h2>L’admin ne répond pas</h2><p>${esc(status.site.message || '')} Un redémarrage règle presque toujours le problème.</p><button class="btn btn-primary" data-action="restart">Redémarrer l’admin</button></div>`;
+    }
+    return '<div><div class="spinner" aria-hidden="true"></div><h2>L’admin démarre…</h2><p>Environ 30 secondes. Cette page s’affichera toute seule.</p></div>';
+  }
+
+  function renderFrames() {
+    const ready = status?.site.state === 'ready';
+    $$('[data-wait]').forEach((el) => {
+      el.hidden = ready;
+      if (!ready) el.innerHTML = waitScreen();
+    });
+    if (!ready) return;
+    const edit = $('#edit-frame');
+    const preview = $('#preview-frame');
+    if (tab === 'edit' && !edit.getAttribute('src')) edit.src = status.siteUrl + editPath;
+    if (tab === 'preview' && !preview.getAttribute('src')) preview.src = status.siteUrl + previewPath;
+  }
+
+  // ---------- Publication ----------
+
+  function renderDialog() {
+    const body = $('#dlg-body');
+    const job = status?.job;
+
+    if (dialogMode === 'confirm') {
+      const items = status.items;
+      body.innerHTML = `
+        <h2 id="dlg-title">Publier le site ?</h2>
+        <p>${items.length ? 'Ces changements vont être mis en ligne :' : 'Des modifications déjà enregistrées vont être envoyées en ligne.'}</p>
+        ${items.length ? changesList(items) : ''}
+        <p class="dlg-note">As-tu bien cliqué sur <strong>Save</strong> dans l’admin ? Ce qui n’est pas enregistré ne sera pas publié.</p>
+        <div class="dlg-actions">
+          <button class="btn btn-quiet" data-action="close-dialog">Annuler</button>
+          <button class="btn btn-publish" data-action="confirm-publish">Publier maintenant</button>
+        </div>`;
+      return;
+    }
+
+    if (!job) return;
+    const icons = { waiting: '', running: '', done: '✓', error: '!' };
+    const steps = job.steps.map((step) => `<li data-status="${step.status}"><span class="dot" aria-hidden="true">${icons[step.status]}</span>${esc(step.label)}</li>`).join('');
+
+    let result = '';
+    let actions = '';
+    if (job.running) {
+      result = '<p>Environ une minute. Tu peux laisser cette fenêtre ouverte.</p>';
+    } else if (job.result === 'ok') {
+      result = '<p class="result-ok">C’est publié ! Le site en ligne sera à jour dans 2 à 3 minutes. Pense à recharger la page avec Ctrl + F5.</p>';
+      actions = '<button class="btn btn-primary" data-action="close-dialog">Fermer</button>';
+    } else {
+      result = `<div class="result-error"><strong>${esc(job.error)}</strong>${job.detail ? `<details><summary>Voir le détail</summary><pre id="job-detail">${esc(job.detail)}</pre></details>` : ''}</div>`;
+      actions = `${job.detail ? '<button class="btn btn-quiet" data-action="copy-detail">Copier le détail</button>' : ''}<button class="btn btn-primary" data-action="close-dialog">Fermer</button>`;
+    }
+
+    body.innerHTML = `
+      <h2 id="dlg-title">${job.running ? 'Publication en cours…' : job.result === 'ok' ? 'Site publié' : 'La publication n’a pas abouti'}</h2>
+      <ul class="progress">${steps}</ul>
+      ${result}
+      ${actions ? `<div class="dlg-actions">${actions}</div>` : ''}`;
+  }
+
+  function openDialog(mode) {
+    dialogMode = mode;
+    renderDialog();
+    const dialog = $('#publish-dialog');
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function closeDialog() {
+    if (status?.job?.running) return;
+    dialogMode = null;
+    $('#publish-dialog').close();
+  }
+
+  // ---------- Onglets ----------
+
+  function showTab(name) {
+    tab = name;
+    $$('.tab').forEach((button) => button.setAttribute('aria-selected', String(button.dataset.tab === name)));
+    $('#tab-home').hidden = name !== 'home';
+    $('#tab-edit').hidden = name !== 'edit';
+    $('#tab-preview').hidden = name !== 'preview';
+    renderFrames();
+  }
+
+  function openEditor(path) {
+    editPath = path;
+    const frame = $('#edit-frame');
+    if (status?.site.state === 'ready') frame.src = status.siteUrl + path;
+    else frame.removeAttribute('src');
+    showTab('edit');
+  }
+
+  // ---------- Actions ----------
+
+  document.addEventListener('click', async (event) => {
+    const target = event.target.closest('[data-tab], [data-open], [data-lang], [data-action]');
+    if (!target) return;
+
+    if (target.dataset.tab) return showTab(target.dataset.tab);
+    if (target.dataset.open) return openEditor(target.dataset.open);
+    if (target.dataset.lang) {
+      previewPath = target.dataset.lang;
+      $$('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b === target)));
+      if (status?.site.state === 'ready') $('#preview-frame').src = status.siteUrl + previewPath;
+      return;
+    }
+
+    switch (target.dataset.action) {
+      case 'restart':
+        await post('/api/site/restart');
+        $('#edit-frame').removeAttribute('src');
+        $('#preview-frame').removeAttribute('src');
+        if (status) status.site = { state: 'starting', message: '' };
+        render();
+        break;
+      case 'reload-edit': {
+        const frame = $('#edit-frame');
+        if (frame.getAttribute('src')) frame.src = frame.src;
+        break;
+      }
+      case 'reload-preview': {
+        const frame = $('#preview-frame');
+        if (frame.getAttribute('src')) frame.src = frame.src;
+        break;
+      }
+      case 'tab-edit':
+        if (status) window.open(status.siteUrl + editPath, '_blank');
+        break;
+      case 'tab-preview':
+        if (status) window.open(status.siteUrl + previewPath, '_blank');
+        break;
+      case 'close-dialog':
+        closeDialog();
+        break;
+      case 'confirm-publish': {
+        const res = await post('/api/publish');
+        if (res.ok || res.status === 409) {
+          dialogMode = 'job';
+          await refresh();
+        }
+        break;
+      }
+      case 'copy-detail':
+        navigator.clipboard?.writeText($('#job-detail')?.textContent ?? '');
+        target.textContent = 'Détail copié';
+        break;
+      case 'quit':
+        if (!confirm('Fermer le Studio ?\n\nCe qui n’a pas été enregistré avec « Save » sera perdu.')) return;
+        await post('/api/quit').catch(() => {});
+        clearTimeout(timer);
+        document.body.innerHTML = '<div class="home"><h1>Le Studio est fermé</h1><p>Tu peux fermer cet onglet. Pour le rouvrir, double-clique sur « Studio JFK ».</p></div>';
+        break;
+    }
+  });
+
+  $('#publish-btn').addEventListener('click', () => openDialog(status?.job?.running ? 'job' : 'confirm'));
+  $('#publish-dialog').addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeDialog();
+  });
+
+  // ---------- Mise à jour régulière ----------
+
+  async function refresh() {
+    clearTimeout(timer);
+    try {
+      const res = await fetch('/api/status', { cache: 'no-store' });
+      status = await res.json();
+      render();
+    } catch {
+      $('#pending-label').textContent = 'Studio injoignable : relance « Studio JFK »';
+      $('#publish-btn').disabled = true;
+    }
+    const fast = status?.job?.running || status?.site.state === 'starting';
+    timer = setTimeout(refresh, fast ? 1000 : 3000);
+  }
+
+  refresh();
+</script>
+</body>
+</html>

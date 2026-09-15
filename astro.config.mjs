@@ -28,7 +28,8 @@ export default defineConfig({
   adapter,
   trailingSlash: 'ignore',
   devToolbar: { enabled: false },
-  server: isAdmin ? { open: '/keystatic' } : {},
+  // Lancé par le Studio JFK, c'est le Studio qui ouvre le navigateur (sur son tableau de bord).
+  server: isAdmin ? { open: process.env.JFK_STUDIO ? false : '/keystatic' } : {},
   // Admin : React doit être pré-empaqueté par Vite, sinon la page Keystatic reste blanche
   // (« does not provide an export named useState »).
   vite: isAdmin

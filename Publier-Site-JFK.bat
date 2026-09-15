@@ -1,7 +1,6 @@
 @echo off
 cd /d "%~dp0"
-set "PATH=C:Program Files
-odejs;%PATH%"
+set "PATH=C:\Program Files\nodejs;%PATH%"
 title Publier le site JFK
 echo.
 echo  ==============================================
