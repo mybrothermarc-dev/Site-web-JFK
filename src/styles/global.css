@@ -181,7 +181,7 @@
   .reveal-delay-4 { animation-delay: 0.32s; }
 
   .text-shadow-soft {
-    text-shadow: 0 1px 20px rgba(12, 32, 40, 0.4);
+    text-shadow: 0 1px 3px rgba(12, 32, 40, 0.55), 0 2px 24px rgba(12, 32, 40, 0.5);
   }
 
   .ease-out-expo {

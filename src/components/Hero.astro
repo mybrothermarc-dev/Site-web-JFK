@@ -128,15 +128,19 @@ const glow: Record<string, string> = {
   )}
 
   {/* Voile sombre bas → haut pour la lisibilité du texte */}
+  {/* Plus marqué sur une vraie photo, dont les zones claires noieraient le texte */}
   <div
-    class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-900/90 via-ink-900/45 to-ink-900/5"
+    class:list={[
+      'absolute inset-0 -z-10 bg-gradient-to-t',
+      heroImage ? 'from-ink-900/95 via-ink-900/60 to-ink-900/20' : 'from-ink-900/90 via-ink-900/45 to-ink-900/5',
+    ]}
     aria-hidden="true"
   >
   </div>
 
   <div class="container-jfk relative z-10 pb-16 pt-40 text-paper-50 sm:pb-24">
     <div class="max-w-3xl">
-      <h1 class="reveal max-w-3xl text-shadow-soft">{title}</h1>
+      <h1 class="reveal max-w-3xl text-paper-50 text-shadow-soft">{title}</h1>
       {subtitle && (
         <p class="reveal reveal-delay-1 mt-6 max-w-2xl text-lg leading-relaxed text-paper-100/95 text-shadow-soft sm:text-xl">
           {subtitle}
