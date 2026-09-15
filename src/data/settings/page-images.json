@@ -1,12 +1,11 @@
 {
-  "home": null,
-  "mission": null,
-  "sponsorChild": null,
-  "supportMissionaries": null,
-  "supportTeachers": null,
-  "projects2026": null,
-  "donate": null,
-  "contact": null,
-  "blog": null,
-  "president": null
+  "home": "/src/assets/images/pages/home.jpg",
+  "mission": "/src/assets/images/pages/mission.JPG",
+  "supportMissionaries": "/src/assets/images/pages/supportMissionaries.jpeg",
+  "supportTeachers": "/src/assets/images/pages/supportTeachers.jpeg",
+  "projects2026": "/src/assets/images/pages/projects2026.jpg",
+  "donate": "/src/assets/images/pages/donate.jpg",
+  "contact": "/src/assets/images/pages/contact.jpeg",
+  "blog": "/src/assets/images/pages/blog.jpg",
+  "president": "/src/assets/images/pages/president.jpg"
 }
