@@ -53,7 +53,7 @@ const structuredData = {
   },
   telephone: siteConfig.contacts.mobile,
   email: siteConfig.contacts.email,
-  sameAs: [siteConfig.socials.facebook, siteConfig.socials.instagram],
+  sameAs: [siteConfig.socials.facebook, siteConfig.socials.instagram].filter(Boolean),
   founder: {
     '@type': 'Person',
     name: siteConfig.founder,

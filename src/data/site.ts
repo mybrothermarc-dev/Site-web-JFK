@@ -28,9 +28,10 @@ export const siteConfig = {
     email: contacts.email,
   },
 
+  // Un réseau social encore provisoire (« A_REMPLACER ») n'est pas affiché : son icône disparaît du pied de page.
   socials: {
-    facebook: contacts.facebook,
-    instagram: contacts.instagram,
+    facebook: /A_REMPLACER/i.test(contacts.facebook) ? null : contacts.facebook,
+    instagram: /A_REMPLACER/i.test(contacts.instagram) ? null : contacts.instagram,
   },
 
   map: {
@@ -76,6 +77,23 @@ export const paymentInfo = {
   bankTransfer: payments.bank,
   mobileMoney: payments.mobileMoney,
 };
+
+/**
+ * Un moyen de paiement n'apparaît sur le site que s'il est vraiment renseigné.
+ * Tant qu'un réglage contient « A_REMPLACER » ou « A_COMPLETER », la page affiche
+ * à la place « Comment donner » : le donateur écrit, JFK envoie ses coordonnées en privé.
+ */
+const isReady = (value?: string | null) => Boolean(value && !/A_REMPLACER|A_COMPLETER/i.test(value));
+
+export const paymentsReady = {
+  stripe: isReady(payments.stripeOneTime),
+  paypal: isReady(payments.paypal),
+  bank: isReady(payments.bank.iban),
+  mobileMoney: payments.mobileMoney.filter((m) => isReady(m.number)),
+};
+
+/** Y a-t-il au moins un paiement en ligne (carte ou PayPal) utilisable ? */
+export const hasOnlinePayment = paymentsReady.stripe || paymentsReady.paypal;
 
 /** Répartition de l'utilisation des dons. */
 export const fundsAllocation = amounts.fundsAllocation;

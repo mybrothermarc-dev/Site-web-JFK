@@ -2,7 +2,7 @@ export const donateContent = {
   fr: {
     seoTitle: 'Faire un don',
     seoDescription:
-      'Faites un don à Jesus Family Kingdom : par carte (Stripe), PayPal, virement bancaire ou Mobile Money (Mvola, Orange Money). Choisissez où va votre don.',
+      'Faites un don à Jesus Family Kingdom et soutenez les villages les plus isolés de Madagascar : parrainage, missionnaires, enseignants et projets 2026.',
     heroEyebrow: 'Faire un don',
     heroTitle: 'Votre don change des vies à Madagascar',
     heroSubtitle: 'Chaque contribution, ponctuelle ou mensuelle, sert directement les villages les plus isolés.',
@@ -33,11 +33,20 @@ export const donateContent = {
     transparencyTitle: 'La transparence, un engagement',
     transparencyText: 'Voici comment vos dons sont utilisés en moyenne. Un rapport annuel détaillé est publié chaque année.',
     reportCta: 'Télécharger le rapport annuel',
+    contactTitle: 'Comment donner',
+    contactBody:
+      'Écrivez-nous sur WhatsApp ou par e-mail : nous vous envoyons personnellement nos coordonnées, par Mobile Money (Madagascar) ou par virement (Europe, États-Unis, Madagascar). Pour protéger nos comptes, elles ne sont pas publiées sur le site.',
+    contactWhatsapp: 'Écrire sur WhatsApp',
+    contactEmail: 'Écrire par e-mail',
+    contactSubject: 'Je veux soutenir la mission',
+    contactMessage:
+      'Bonjour ! Je voudrais soutenir Jesus Family Kingdom. Pouvez-vous m’envoyer vos coordonnées ? Je suis à (pays) et je préfère (Mobile Money / virement).',
+    contactNote: 'Nous répondons en général dans la journée.',
   },
   en: {
     seoTitle: 'Donate',
     seoDescription:
-      'Donate to Jesus Family Kingdom: by card (Stripe), PayPal, bank transfer, or Mobile Money (Mvola, Orange Money). Choose where your gift goes.',
+      'Donate to Jesus Family Kingdom and support the most isolated villages of Madagascar: sponsorship, missionaries, teachers and 2026 projects.',
     heroEyebrow: 'Donate',
     heroTitle: 'Your gift changes lives in Madagascar',
     heroSubtitle: 'Every contribution, one-time or monthly, directly serves the most isolated villages.',
@@ -68,5 +77,14 @@ export const donateContent = {
     transparencyTitle: 'Transparency, a commitment',
     transparencyText: 'Here is how your donations are used on average. A detailed annual report is published every year.',
     reportCta: 'Download the annual report',
+    contactTitle: 'How to give',
+    contactBody:
+      'Write to us on WhatsApp or by email: we personally send you our details, by Mobile Money (Madagascar) or bank transfer (Europe, United States, Madagascar). To protect our accounts, they are not published on the site.',
+    contactWhatsapp: 'Write on WhatsApp',
+    contactEmail: 'Write by email',
+    contactSubject: 'I want to support the mission',
+    contactMessage:
+      'Hello! I would like to support Jesus Family Kingdom. Could you send me your details? I am in (country) and I prefer (Mobile Money / bank transfer).',
+    contactNote: 'We usually answer the same day.',
   },
 };
