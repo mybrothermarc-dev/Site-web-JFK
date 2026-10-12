@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.jesus-family-kingdom.com/sitemap-index.xml
+Sitemap: https://www.jesus-family-kingdom.org/sitemap-index.xml
