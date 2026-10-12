@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
 // Site final une fois le domaine branché sur Cloudflare Pages.
-const SITE_URL = 'https://www.jesus-family-kingdom.com';
+const SITE_URL = 'https://www.jesus-family-kingdom.org';
 
 // L'admin (Keystatic) ne tourne qu'en local, lancé par « npm run admin » / Ouvrir-Admin-JFK.bat.
 // Le build publié sur Cloudflare reste 100 % statique et ne charge rien de l'admin.

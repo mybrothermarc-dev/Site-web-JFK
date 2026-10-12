@@ -7,7 +7,7 @@ Site vitrine et de levée de fonds pour Jesus Family Kingdom, œuvre chrétienne
 1. [Stack technique](#1-stack-technique)
 2. [Lancer le site en local](#2-lancer-le-site-en-local)
 3. [Déployer sur GitHub + Cloudflare Pages](#3-déployer-sur-github--cloudflare-pages)
-4. [Brancher le domaine jesus-family-kingdom.com](#4-brancher-le-domaine-jesus-family-kingdomcom)
+4. [Brancher le domaine jesus-family-kingdom.org](#4-brancher-le-domaine-jesus-family-kingdomorg)
 5. [Modifier le contenu avec l'admin](#5-modifier-le-contenu-avec-ladmin)
 6. [Écrire un article de blog](#6-écrire-un-article-de-blog)
 7. [Configurer les formulaires (Web3Forms)](#7-configurer-les-formulaires-web3forms)
@@ -74,13 +74,13 @@ git push -u origin main
 5. Clique sur **Save and Deploy**. Cloudflare installe les dépendances, build le site et le publie sur une URL du type `jfk-site.pages.dev`.
 6. À chaque `git push` sur la branche `main`, Cloudflare Pages redéploie automatiquement le site (déploiement continu gratuit).
 
-## 4. Brancher le domaine jesus-family-kingdom.com
+## 4. Brancher le domaine jesus-family-kingdom.org
 
 1. Dans le projet Cloudflare Pages, va dans l'onglet **Custom domains** → **Set up a custom domain**.
-2. Saisis `www.jesus-family-kingdom.com` (et éventuellement `jesus-family-kingdom.com` pour la racine).
+2. Saisis `www.jesus-family-kingdom.org` (et éventuellement `jesus-family-kingdom.org` pour la racine).
 3. Si le domaine est déjà géré par Cloudflare (zone DNS existante) : Cloudflare crée automatiquement l'enregistrement DNS nécessaire (CNAME) et active le HTTPS automatique (certificat SSL gratuit) en quelques minutes.
 4. Si le domaine est enregistré ailleurs : soit tu transfères la gestion DNS vers Cloudflare (recommandé, gratuit), soit tu ajoutes manuellement chez ton registrar l'enregistrement CNAME fourni par Cloudflare Pages pointant vers `jfk-site.pages.dev`.
-5. Pense à créer une redirection de `jesus-family-kingdom.com` vers `www.jesus-family-kingdom.com` (ou l'inverse) dans **Rules → Redirect Rules** pour éviter le contenu dupliqué.
+5. Pense à créer une redirection de `jesus-family-kingdom.org` vers `www.jesus-family-kingdom.org` (ou l'inverse) dans **Rules → Redirect Rules** pour éviter le contenu dupliqué.
 
 ## 5. Modifier le contenu avec l'admin
 
@@ -178,7 +178,7 @@ Le site est **entièrement fonctionnel et déployable tel quel**, mais les élé
 
 ### Contenu et coordonnées
 - [ ] `siteConfig.socials.facebook` et `instagram` — liens exacts vers les pages officielles.
-- [ ] `siteConfig.contacts.email` — une adresse email `contact@jesus-family-kingdom.com` a été utilisée par défaut ; confirme qu'elle existe ou remplace-la.
+- [ ] `siteConfig.contacts.email` — une adresse email `contact@jesus-family-kingdom.org` a été utilisée par défaut ; confirme qu'elle existe ou remplace-la.
 - [ ] Web3Forms — créer la clé d'accès (voir section 7).
 - [ ] `annualReportUrl` (`/documents/rapport-annuel-2025.pdf`) — déposer le vrai PDF du rapport annuel dans `public/documents/` (le lien est déjà prêt, il attend juste le fichier).
 - [ ] Mentions légales (`src/data/pages/legal.ts`) — préciser le statut juridique exact de l'association/fondation à Madagascar.

@@ -44,6 +44,10 @@ const heroImage = resolveImage(image ?? (routeKey ? pageImages[routeKey] : null)
 const heroWidths = heroImage ? [640, 960, 1280, 1920].filter((w) => w <= heroImage.width) : [];
 if (heroImage && heroWidths.length === 0) heroWidths.push(heroImage.width);
 
+// Sans photo réelle, la page est clairement marquée « en cours de construction ».
+const isFrench = Astro.url.pathname.startsWith('/fr');
+const underConstruction = isFrench ? 'En cours de construction' : 'Under construction';
+
 // Légère variation d'ambiance selon la tonalité de la page
 const glow: Record<string, string> = {
   sun: '#F5B94A',
@@ -114,6 +118,13 @@ const glow: Record<string, string> = {
       </g>
     </svg>
   </div>
+
+  {!heroImage && (
+    <span class="absolute right-5 top-24 z-10 inline-flex items-center gap-2 rounded-full bg-ink-900/65 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-paper-50 backdrop-blur-sm sm:right-8 sm:top-28">
+      <span class="h-2 w-2 rounded-full bg-gold-400"></span>
+      {underConstruction}
+    </span>
+  )}
 
   {heroImage && (
     <Image

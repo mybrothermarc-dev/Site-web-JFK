@@ -15,7 +15,7 @@ import type { RouteKey } from '../i18n/routes';
 export const siteConfig = {
   name: 'Jesus Family Kingdom',
   shortName: 'JFK',
-  url: 'https://www.jesus-family-kingdom.com',
+  url: 'https://www.jesus-family-kingdom.org',
   founder: 'Sedera Rakotoaritsifa',
 
   address: contacts.address,

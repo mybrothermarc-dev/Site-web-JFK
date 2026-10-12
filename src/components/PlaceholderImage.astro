@@ -15,6 +15,13 @@ interface Props {
 
 const { tone = 'sun', label, kind = 'general', class: className = '', hideLabel = false } = Astro.props;
 
+// La langue vient de l'adresse de la page (/fr/... ou /en/...), pour ne pas avoir à la passer partout.
+const isFrench = Astro.url.pathname.startsWith('/fr');
+const underConstruction = isFrench ? 'En cours de construction' : 'Under construction';
+const missingPhotoAlt = isFrench
+  ? `Photo de ${label} en cours de construction`
+  : `Photo of ${label} under construction`;
+
 // tone → base terre (clay / lake / moss via les alias de palette)
 const bases: Record<string, { from: string; to: string; ink: string }> = {
   sun: { from: '#98D6F0', to: '#12749F', ink: '#0E3346' },
@@ -36,7 +43,7 @@ const uid = Math.random().toString(36).slice(2, 8);
 
 <div
   role="img"
-  aria-label={`Photo de ${label} — à remplacer par une photo réelle`}
+  aria-label={missingPhotoAlt}
   class:list={['relative overflow-hidden', className]}
   style={`background: radial-gradient(120% 120% at 72% 22%, ${b.from} 0%, ${b.to} 78%);`}
 >
@@ -58,7 +65,7 @@ const uid = Math.random().toString(36).slice(2, 8);
   {!hideLabel && (
     <span class="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-md bg-ink-900/55 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-paper-50 backdrop-blur-sm">
       <span class="h-1.5 w-1.5 rounded-full bg-gold-400"></span>
-      Photo à venir
+      {underConstruction}
     </span>
   )}
 </div>
